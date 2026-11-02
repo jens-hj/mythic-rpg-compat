@@ -1,0 +1,287 @@
+{
+  "sources": [
+    {
+      "type": "mythic_rpg_compat:gem_recolor",
+      "gems": [
+        "ametrine",
+        "aquamarine",
+        "citrine",
+        "jade",
+        "peridot",
+        "ruby",
+        "sapphire",
+        "topaz"
+      ],
+      "textures": [
+        {
+          "texture": "archers:item/netherite_heavy_crossbow_arrow",
+          "twin": "archers:item/heavy_crossbow_arrow"
+        },
+        {
+          "texture": "archers:item/netherite_heavy_crossbow_firework",
+          "twin": "archers:item/heavy_crossbow_firework"
+        },
+        {
+          "texture": "archers:item/netherite_heavy_crossbow_pulling_0",
+          "twin": "archers:item/heavy_crossbow_pulling_0"
+        },
+        {
+          "texture": "archers:item/netherite_heavy_crossbow_pulling_1",
+          "twin": "archers:item/heavy_crossbow_pulling_1"
+        },
+        {
+          "texture": "archers:item/netherite_heavy_crossbow_pulling_2",
+          "twin": "archers:item/heavy_crossbow_pulling_2"
+        },
+        {
+          "texture": "archers:item/netherite_heavy_crossbow_standby",
+          "twin": "archers:item/heavy_crossbow_standby"
+        },
+        {
+          "texture": "archers:item/netherite_longbow"
+        },
+        {
+          "texture": "archers:item/netherite_longbow_pulling_0"
+        },
+        {
+          "texture": "archers:item/netherite_longbow_pulling_1"
+        },
+        {
+          "texture": "archers:item/netherite_longbow_pulling_2"
+        },
+        {
+          "texture": "archers:item/netherite_ranger_armor_chest",
+          "twin": "archers:item/ranger_armor_chest"
+        },
+        {
+          "texture": "archers:item/netherite_ranger_armor_feet",
+          "twin": "archers:item/ranger_armor_feet"
+        },
+        {
+          "texture": "archers:item/netherite_ranger_armor_head",
+          "twin": "archers:item/ranger_armor_head"
+        },
+        {
+          "texture": "archers:item/netherite_ranger_armor_legs",
+          "twin": "archers:item/ranger_armor_legs"
+        },
+        {
+          "texture": "archers:item/netherite_rapid_crossbow_arrow",
+          "twin": "archers:item/rapid_crossbow_arrow"
+        },
+        {
+          "texture": "archers:item/netherite_rapid_crossbow_firework",
+          "twin": "archers:item/rapid_crossbow_firework"
+        },
+        {
+          "texture": "archers:item/netherite_rapid_crossbow_pulling_0",
+          "twin": "archers:item/rapid_crossbow_pulling_0"
+        },
+        {
+          "texture": "archers:item/netherite_rapid_crossbow_pulling_1",
+          "twin": "archers:item/rapid_crossbow_pulling_1"
+        },
+        {
+          "texture": "archers:item/netherite_rapid_crossbow_pulling_2",
+          "twin": "archers:item/rapid_crossbow_pulling_2"
+        },
+        {
+          "texture": "archers:item/netherite_rapid_crossbow_standby",
+          "twin": "archers:item/rapid_crossbow_standby"
+        },
+        {
+          "texture": "archers:item/netherite_shortbow"
+        },
+        {
+          "texture": "archers:item/netherite_shortbow_pulling_0"
+        },
+        {
+          "texture": "archers:item/netherite_shortbow_pulling_1"
+        },
+        {
+          "texture": "archers:item/netherite_shortbow_pulling_2"
+        },
+        {
+          "texture": "archers:item/netherite_spear",
+          "twin": "archers:item/diamond_spear"
+        },
+        {
+          "texture": "paladins:item/netherite_claymore",
+          "twin": "paladins:item/diamond_claymore"
+        },
+        {
+          "texture": "paladins:item/netherite_crusader_armor_chest",
+          "twin": "paladins:item/crusader_armor_chest"
+        },
+        {
+          "texture": "paladins:item/netherite_crusader_armor_feet",
+          "twin": "paladins:item/crusader_armor_feet"
+        },
+        {
+          "texture": "paladins:item/netherite_crusader_armor_head",
+          "twin": "paladins:item/crusader_armor_head"
+        },
+        {
+          "texture": "paladins:item/netherite_crusader_armor_legs",
+          "twin": "paladins:item/crusader_armor_legs"
+        },
+        {
+          "texture": "paladins:item/netherite_great_hammer",
+          "twin": "paladins:item/diamond_great_hammer"
+        },
+        {
+          "texture": "paladins:item/netherite_holy_staff",
+          "twin": "paladins:item/holy_staff"
+        },
+        {
+          "texture": "paladins:item/netherite_holy_wand",
+          "twin": "paladins:item/holy_wand"
+        },
+        {
+          "texture": "paladins:item/netherite_kite_shield",
+          "twin": "paladins:item/diamond_kite_shield"
+        },
+        {
+          "texture": "paladins:item/netherite_mace",
+          "twin": "paladins:item/diamond_mace"
+        },
+        {
+          "texture": "paladins:item/netherite_prior_robe_chest",
+          "twin": "paladins:item/prior_robe_chest"
+        },
+        {
+          "texture": "paladins:item/netherite_prior_robe_feet",
+          "twin": "paladins:item/prior_robe_feet"
+        },
+        {
+          "texture": "paladins:item/netherite_prior_robe_head",
+          "twin": "paladins:item/prior_robe_head"
+        },
+        {
+          "texture": "paladins:item/netherite_prior_robe_legs",
+          "twin": "paladins:item/prior_robe_legs"
+        },
+        {
+          "texture": "rogues:item/netherite_assassin_armor_chest",
+          "twin": "rogues:item/assassin_armor_chest"
+        },
+        {
+          "texture": "rogues:item/netherite_assassin_armor_feet",
+          "twin": "rogues:item/assassin_armor_feet"
+        },
+        {
+          "texture": "rogues:item/netherite_assassin_armor_head",
+          "twin": "rogues:item/assassin_armor_head"
+        },
+        {
+          "texture": "rogues:item/netherite_assassin_armor_legs",
+          "twin": "rogues:item/assassin_armor_legs"
+        },
+        {
+          "texture": "rogues:item/netherite_berserker_armor_chest",
+          "twin": "rogues:item/berserker_armor_chest"
+        },
+        {
+          "texture": "rogues:item/netherite_berserker_armor_feet",
+          "twin": "rogues:item/berserker_armor_feet"
+        },
+        {
+          "texture": "rogues:item/netherite_berserker_armor_head",
+          "twin": "rogues:item/berserker_armor_head"
+        },
+        {
+          "texture": "rogues:item/netherite_berserker_armor_legs",
+          "twin": "rogues:item/berserker_armor_legs"
+        },
+        {
+          "texture": "rogues:item/netherite_dagger",
+          "twin": "rogues:item/diamond_dagger"
+        },
+        {
+          "texture": "rogues:item/netherite_double_axe",
+          "twin": "rogues:item/diamond_double_axe"
+        },
+        {
+          "texture": "rogues:item/netherite_glaive",
+          "twin": "rogues:item/diamond_glaive"
+        },
+        {
+          "texture": "rogues:item/netherite_sickle",
+          "twin": "rogues:item/diamond_sickle"
+        },
+        {
+          "texture": "wizards:item/netherite_arcane_robe_chest",
+          "twin": "wizards:item/arcane_robe_chest"
+        },
+        {
+          "texture": "wizards:item/netherite_arcane_robe_feet",
+          "twin": "wizards:item/arcane_robe_feet"
+        },
+        {
+          "texture": "wizards:item/netherite_arcane_robe_head",
+          "twin": "wizards:item/arcane_robe_head"
+        },
+        {
+          "texture": "wizards:item/netherite_arcane_robe_legs",
+          "twin": "wizards:item/arcane_robe_legs"
+        },
+        {
+          "texture": "wizards:item/netherite_fire_robe_chest",
+          "twin": "wizards:item/fire_robe_chest"
+        },
+        {
+          "texture": "wizards:item/netherite_fire_robe_feet",
+          "twin": "wizards:item/fire_robe_feet"
+        },
+        {
+          "texture": "wizards:item/netherite_fire_robe_head",
+          "twin": "wizards:item/fire_robe_head"
+        },
+        {
+          "texture": "wizards:item/netherite_fire_robe_legs",
+          "twin": "wizards:item/fire_robe_legs"
+        },
+        {
+          "texture": "wizards:item/netherite_frost_robe_chest",
+          "twin": "wizards:item/frost_robe_chest"
+        },
+        {
+          "texture": "wizards:item/netherite_frost_robe_feet",
+          "twin": "wizards:item/frost_robe_feet"
+        },
+        {
+          "texture": "wizards:item/netherite_frost_robe_head",
+          "twin": "wizards:item/frost_robe_head"
+        },
+        {
+          "texture": "wizards:item/netherite_frost_robe_legs",
+          "twin": "wizards:item/frost_robe_legs"
+        },
+        {
+          "texture": "wizards:item/staff_netherite_arcane",
+          "twin": "wizards:item/staff_arcane"
+        },
+        {
+          "texture": "wizards:item/staff_netherite_fire",
+          "twin": "wizards:item/staff_fire"
+        },
+        {
+          "texture": "wizards:item/staff_netherite_frost",
+          "twin": "wizards:item/staff_frost"
+        },
+        {
+          "texture": "wizards:item/wand_netherite_arcane",
+          "twin": "wizards:item/wand_arcane"
+        },
+        {
+          "texture": "wizards:item/wand_netherite_fire",
+          "twin": "wizards:item/wand_fire"
+        },
+        {
+          "texture": "wizards:item/wand_netherite_frost",
+          "twin": "wizards:item/wand_frost"
+        }
+      ]
+    }
+  ]
+}

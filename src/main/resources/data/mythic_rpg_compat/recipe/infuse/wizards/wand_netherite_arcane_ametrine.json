@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "wizards"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "wizards:wand_netherite_arcane",
+  "addition": "mythicupgrades:ametrine_ingot",
+  "result": {
+    "id": "wizards:wand_netherite_arcane",
+    "components": {
+      "mythic_rpg_compat:infusion": "ametrine",
+      "minecraft:item_model": "mythic_rpg_compat:ametrine/wizards/wand_netherite_arcane"
+    }
+  }
+}

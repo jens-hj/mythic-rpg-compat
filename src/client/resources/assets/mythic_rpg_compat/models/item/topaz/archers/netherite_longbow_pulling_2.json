@@ -1,0 +1,6 @@
+{
+  "parent": "mythic_rpg_compat:item/topaz/archers/netherite_longbow",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/topaz/archers/netherite_longbow_pulling_2"
+  }
+}

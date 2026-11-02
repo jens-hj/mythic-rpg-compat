@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/jade/wizards/wand_netherite_frost"
+  }
+}

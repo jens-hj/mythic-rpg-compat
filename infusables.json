@@ -1,0 +1,26 @@
+{
+  "_comment": "Netherite RPG Series gear that can be infused. Run scripts/gen_data.py after editing.",
+  "gems": ["ametrine", "aquamarine", "citrine", "jade", "peridot", "ruby", "sapphire", "topaz"],
+  "mods": {
+    "archers": {
+      "modrinth": "archers",
+      "armor": ["netherite_ranger_armor"],
+      "weapons": ["netherite_longbow", "netherite_shortbow", "netherite_heavy_crossbow", "netherite_rapid_crossbow", "netherite_spear"]
+    },
+    "paladins": {
+      "modrinth": "paladins-and-priests",
+      "armor": ["netherite_crusader_armor", "netherite_prior_robe"],
+      "weapons": ["netherite_claymore", "netherite_great_hammer", "netherite_mace", "netherite_holy_staff", "netherite_holy_wand", "netherite_kite_shield"]
+    },
+    "wizards": {
+      "modrinth": "wizards",
+      "armor": ["netherite_arcane_robe", "netherite_fire_robe", "netherite_frost_robe"],
+      "weapons": ["staff_netherite_arcane", "staff_netherite_fire", "staff_netherite_frost", "wand_netherite_arcane", "wand_netherite_fire", "wand_netherite_frost"]
+    },
+    "rogues": {
+      "modrinth": "rogues-and-warriors",
+      "armor": ["netherite_assassin_armor", "netherite_berserker_armor"],
+      "weapons": ["netherite_dagger", "netherite_double_axe", "netherite_glaive", "netherite_sickle"]
+    }
+  }
+}

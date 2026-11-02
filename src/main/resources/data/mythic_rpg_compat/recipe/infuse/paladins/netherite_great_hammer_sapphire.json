@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "paladins"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "paladins:netherite_great_hammer",
+  "addition": "mythicupgrades:sapphire_ingot",
+  "result": {
+    "id": "paladins:netherite_great_hammer",
+    "components": {
+      "mythic_rpg_compat:infusion": "sapphire",
+      "minecraft:item_model": "mythic_rpg_compat:sapphire/paladins/netherite_great_hammer"
+    }
+  }
+}

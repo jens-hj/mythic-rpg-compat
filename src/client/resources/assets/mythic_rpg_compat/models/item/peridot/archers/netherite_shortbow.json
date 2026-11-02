@@ -1,0 +1,6 @@
+{
+  "parent": "archers:item/base/bow_16",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/peridot/archers/netherite_shortbow"
+  }
+}

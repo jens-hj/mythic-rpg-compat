@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "paladins"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "paladins:netherite_prior_robe_legs",
+  "addition": "mythicupgrades:aquamarine_ingot",
+  "result": {
+    "id": "paladins:netherite_prior_robe_legs",
+    "components": {
+      "mythic_rpg_compat:infusion": "aquamarine",
+      "minecraft:item_model": "mythic_rpg_compat:aquamarine/paladins/netherite_prior_robe_legs",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/aquamarine/paladins/netherite_prior_robe.png"
+        }
+      }
+    }
+  }
+}

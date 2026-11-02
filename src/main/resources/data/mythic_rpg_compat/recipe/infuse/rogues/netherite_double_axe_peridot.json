@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "rogues"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "rogues:netherite_double_axe",
+  "addition": "mythicupgrades:peridot_ingot",
+  "result": {
+    "id": "rogues:netherite_double_axe",
+    "components": {
+      "mythic_rpg_compat:infusion": "peridot",
+      "minecraft:item_model": "mythic_rpg_compat:peridot/rogues/netherite_double_axe"
+    }
+  }
+}

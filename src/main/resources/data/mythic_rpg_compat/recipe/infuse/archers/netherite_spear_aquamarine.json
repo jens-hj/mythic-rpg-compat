@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:netherite_spear",
+  "addition": "mythicupgrades:aquamarine_ingot",
+  "result": {
+    "id": "archers:netherite_spear",
+    "components": {
+      "mythic_rpg_compat:infusion": "aquamarine",
+      "minecraft:item_model": "mythic_rpg_compat:aquamarine/archers/netherite_spear"
+    }
+  }
+}

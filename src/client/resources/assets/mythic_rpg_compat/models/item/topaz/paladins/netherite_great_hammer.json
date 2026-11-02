@@ -1,0 +1,7 @@
+{
+  "parent": "paladins:item/base/great_hammer",
+  "textures": {
+    "1": "mythic_rpg_compat:item/topaz/paladins/netherite_great_hammer",
+    "particle": "mythic_rpg_compat:item/topaz/paladins/netherite_great_hammer"
+  }
+}

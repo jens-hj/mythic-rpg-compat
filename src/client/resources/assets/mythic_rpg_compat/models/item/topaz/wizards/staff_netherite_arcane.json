@@ -1,0 +1,6 @@
+{
+  "parent": "wizards:item/medium_staff",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/topaz/wizards/staff_netherite_arcane"
+  }
+}

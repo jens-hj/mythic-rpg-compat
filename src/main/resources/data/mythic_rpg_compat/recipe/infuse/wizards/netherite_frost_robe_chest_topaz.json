@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "wizards"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "wizards:netherite_frost_robe_chest",
+  "addition": "mythicupgrades:topaz_ingot",
+  "result": {
+    "id": "wizards:netherite_frost_robe_chest",
+    "components": {
+      "mythic_rpg_compat:infusion": "topaz",
+      "minecraft:item_model": "mythic_rpg_compat:topaz/wizards/netherite_frost_robe_chest",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/topaz/wizards/netherite_frost_robe.png"
+        }
+      }
+    }
+  }
+}

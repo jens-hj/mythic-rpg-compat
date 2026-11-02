@@ -1,0 +1,6 @@
+{
+  "parent": "archers:item/base/spear_28",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/topaz/archers/netherite_spear"
+  }
+}

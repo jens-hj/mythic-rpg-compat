@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "wizards"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "wizards:staff_netherite_fire",
+  "addition": "mythicupgrades:aquamarine_ingot",
+  "result": {
+    "id": "wizards:staff_netherite_fire",
+    "components": {
+      "mythic_rpg_compat:infusion": "aquamarine",
+      "minecraft:item_model": "mythic_rpg_compat:aquamarine/wizards/staff_netherite_fire"
+    }
+  }
+}

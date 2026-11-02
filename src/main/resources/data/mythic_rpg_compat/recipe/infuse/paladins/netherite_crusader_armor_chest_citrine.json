@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "paladins"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "paladins:netherite_crusader_armor_chest",
+  "addition": "mythicupgrades:citrine_ingot",
+  "result": {
+    "id": "paladins:netherite_crusader_armor_chest",
+    "components": {
+      "mythic_rpg_compat:infusion": "citrine",
+      "minecraft:item_model": "mythic_rpg_compat:citrine/paladins/netherite_crusader_armor_chest",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/citrine/paladins/netherite_crusader_armor.png"
+        }
+      }
+    }
+  }
+}

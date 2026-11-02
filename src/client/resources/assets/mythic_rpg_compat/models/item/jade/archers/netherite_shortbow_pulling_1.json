@@ -1,0 +1,6 @@
+{
+  "parent": "mythic_rpg_compat:item/jade/archers/netherite_shortbow",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/jade/archers/netherite_shortbow_pulling_1"
+  }
+}

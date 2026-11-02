@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "wizards"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "wizards:staff_netherite_frost",
+  "addition": "mythicupgrades:jade_ingot",
+  "result": {
+    "id": "wizards:staff_netherite_frost",
+    "components": {
+      "mythic_rpg_compat:infusion": "jade",
+      "minecraft:item_model": "mythic_rpg_compat:jade/wizards/staff_netherite_frost"
+    }
+  }
+}

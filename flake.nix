@@ -29,7 +29,7 @@
         ];
       in {
         devShells.default = pkgs.mkShell {
-          packages = [ jdk pkgs.python3 pkgs.git ];
+          packages = [ jdk (pkgs.python3.withPackages (ps: [ ps.pillow ])) pkgs.git ];
           JAVA_HOME = "${jdk}";
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath runtimeLibs;
         };

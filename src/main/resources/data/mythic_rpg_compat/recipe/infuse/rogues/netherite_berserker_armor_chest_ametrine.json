@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "rogues"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "rogues:netherite_berserker_armor_chest",
+  "addition": "mythicupgrades:ametrine_ingot",
+  "result": {
+    "id": "rogues:netherite_berserker_armor_chest",
+    "components": {
+      "mythic_rpg_compat:infusion": "ametrine",
+      "minecraft:item_model": "mythic_rpg_compat:ametrine/rogues/netherite_berserker_armor_chest",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/ametrine/rogues/netherite_berserker_armor.png"
+        }
+      }
+    }
+  }
+}

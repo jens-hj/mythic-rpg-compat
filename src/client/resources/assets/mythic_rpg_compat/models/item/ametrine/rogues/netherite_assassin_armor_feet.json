@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/ametrine/rogues/netherite_assassin_armor_feet"
+  }
+}

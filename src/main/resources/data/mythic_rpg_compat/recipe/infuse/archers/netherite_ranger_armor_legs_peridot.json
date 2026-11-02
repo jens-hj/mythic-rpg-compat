@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:netherite_ranger_armor_legs",
+  "addition": "mythicupgrades:peridot_ingot",
+  "result": {
+    "id": "archers:netherite_ranger_armor_legs",
+    "components": {
+      "mythic_rpg_compat:infusion": "peridot",
+      "minecraft:item_model": "mythic_rpg_compat:peridot/archers/netherite_ranger_armor_legs",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/peridot/archers/netherite_ranger_armor.png"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "gems": [
+    "ametrine",
+    "aquamarine",
+    "citrine",
+    "jade",
+    "peridot",
+    "ruby",
+    "sapphire",
+    "topaz"
+  ],
+  "textures": [
+    {
+      "texture": "archers:armor/netherite_ranger_armor",
+      "twin": "archers:armor/ranger_armor"
+    },
+    {
+      "texture": "paladins:armor/netherite_crusader_armor",
+      "twin": "paladins:armor/crusader_armor"
+    },
+    {
+      "texture": "paladins:armor/netherite_prior_robe",
+      "twin": "paladins:armor/prior_robe"
+    },
+    {
+      "texture": "rogues:armor/netherite_assassin_armor",
+      "twin": "rogues:armor/assassin_armor"
+    },
+    {
+      "texture": "rogues:armor/netherite_berserker_armor",
+      "twin": "rogues:armor/berserker_armor"
+    },
+    {
+      "texture": "wizards:armor/netherite_arcane_robe",
+      "twin": "wizards:armor/arcane_robe"
+    },
+    {
+      "texture": "wizards:armor/netherite_fire_robe",
+      "twin": "wizards:armor/fire_robe"
+    },
+    {
+      "texture": "wizards:armor/netherite_frost_robe",
+      "twin": "wizards:armor/frost_robe"
+    }
+  ]
+}

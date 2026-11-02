@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "wizards"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "wizards:netherite_frost_robe_feet",
+  "addition": "mythicupgrades:ametrine_ingot",
+  "result": {
+    "id": "wizards:netherite_frost_robe_feet",
+    "components": {
+      "mythic_rpg_compat:infusion": "ametrine",
+      "minecraft:item_model": "mythic_rpg_compat:ametrine/wizards/netherite_frost_robe_feet",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/ametrine/wizards/netherite_frost_robe.png"
+        }
+      }
+    }
+  }
+}

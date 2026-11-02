@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:netherite_rapid_crossbow",
+  "addition": "mythicupgrades:citrine_ingot",
+  "result": {
+    "id": "archers:netherite_rapid_crossbow",
+    "components": {
+      "mythic_rpg_compat:infusion": "citrine",
+      "minecraft:item_model": "mythic_rpg_compat:citrine/archers/netherite_rapid_crossbow"
+    }
+  }
+}
