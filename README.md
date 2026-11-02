@@ -52,6 +52,12 @@ Rogues & Warriors, plus their Ruby/Aeternium/Crystal weapons. See [`infusables.j
   - **Spells**, on the spell's direct target only (not splash or area victims), at most once per
     target per second. The gem comes from the main-hand item.
 
+## Config
+
+`config/rpg_gear_upgrades.json` (created on first start) scales the particles of Mythic Upgrades'
+gem effects: `mythic_particles.<gem>` per gem (`1` = Mythic's default, `0` = none), or
+`mythic_particles.override` for all gems at once. Server-side; restart to apply.
+
 ## How it works
 
 - Data components `mythic_rpg_compat:infusion` (gem) and `mythic_rpg_compat:forged` (tier) store

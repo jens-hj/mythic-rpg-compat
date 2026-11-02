@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.0
+- New config `config/rpg_gear_upgrades.json` to turn down Mythic Upgrades' gem effect particles, per gem or all at once with `override`.
+
 ## 0.5.0
 - Arrows and bolts from infused bows and crossbows trigger the gem's on-hit effect (fully drawn bows; crossbow bolts always).
 - Spells trigger the gem's on-hit effect only on their direct target, at most once per target per second (splash, area and beam ticks no longer proc).

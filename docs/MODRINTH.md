@@ -46,6 +46,22 @@ All recipes show up in REI, JEI and EMI as normal smithing recipes.
 - [Wizards](https://modrinth.com/mod/wizards): Arcane, Fire and Frost robes, staves, wands, plus the Ruby fire staff and the Crystal arcane staff
 - [Rogues & Warriors](https://modrinth.com/mod/rogues-and-warriors): Assassin and Berserker armor, dagger, double axe, glaive, sickle, plus Ruby/Aeternium variants
 
+## Config: fewer Mythic particles
+
+Mythic Upgrades' gem effects (Jade's trail and aura, Topaz and Arcane waves, Ice Bomb rings, …) can spawn a lot of particles. `config/rpg_gear_upgrades.json` scales them:
+
+```json
+"mythic_particles": {
+  "override": null,
+  "ametrine": 1.0, "aquamarine": 1.0, "citrine": 1.0, "jade": 0.25,
+  "peridot": 1.0, "ruby": 1.0, "topaz": 1.0, "necoium": 1.0
+}
+```
+
+- `1` keeps Mythic's amount, `0` hides them, `0.25` keeps about a quarter.
+- Set `override` to a number to use it for every gem instead of the per-gem values.
+- Particles are spawned by the server, so on a server, edit the **server's** config (restart to apply). In singleplayer, your own.
+
 ## Requirements
 
 - Fabric Loader + Fabric API
