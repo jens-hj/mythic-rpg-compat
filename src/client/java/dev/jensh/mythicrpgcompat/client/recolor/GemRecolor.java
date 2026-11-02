@@ -40,6 +40,17 @@ public final class GemRecolor {
 	 *                 (for Ruby/Aeternium/Crystal textures, whose twin is the netherite version)
 	 */
 	public static NativeImage recolor(NativeImage source, @Nullable NativeImage twin, int[] palette, boolean diffOnly) {
+		return recolor(source, twin, palette, null, diffOnly);
+	}
+
+	/** Share of the masked shades (darkest first) that take the forge palette on a forged + infused piece. */
+	private static final double TWO_TONE_FORGE_SHARE = 0.4;
+
+	/**
+	 * @param base forge palette for a forged + infused piece: the darker shades take the forge's
+	 *             colours, the lighter ones the gem's, like a gem inlaid in forged metal
+	 */
+	public static NativeImage recolor(NativeImage source, @Nullable NativeImage twin, int[] palette, int @Nullable [] base, boolean diffOnly) {
 		int w = source.getWidth();
 		int h = source.getHeight();
 		boolean useTwin = twin != null && twin.getWidth() == w && twin.getHeight() == h;
@@ -65,10 +76,12 @@ public final class GemRecolor {
 		Integer[] ranked = byLuminance.values().toArray(Integer[]::new);
 		int n = ranked.length;
 		java.util.HashMap<Integer, Integer> mapping = new java.util.HashMap<>();
+		int dark = base == null ? 0 : Math.max(1, (int) Math.round(n * TWO_TONE_FORGE_SHARE));
 		for (int i = 0; i < n; i++) {
-			double t = n == 1 ? 0.5 : (double) i / (n - 1);
-			int idx = (int) Math.round(PALETTE_LO + t * (Math.min(PALETTE_HI, palette.length - 1) - PALETTE_LO));
-			mapping.put(ranked[i], palette[Math.max(0, Math.min(palette.length - 1, idx))] & 0xFFFFFF);
+			int rgb = i < dark
+					? pick(base, i, dark, PALETTE_LO, 6)
+					: pick(palette, i - dark, n - dark, base == null ? PALETTE_LO : 3, PALETTE_HI);
+			mapping.put(ranked[i], rgb);
 		}
 
 		NativeImage out = new NativeImage(w, h, false);
@@ -85,6 +98,13 @@ public final class GemRecolor {
 			}
 		}
 		return out;
+	}
+
+	/** Colour for shade {@code i} of {@code n}, spread over palette indices {@code lo..hi}. */
+	private static int pick(int[] palette, int i, int n, int lo, int hi) {
+		double t = n == 1 ? 0.5 : (double) i / (n - 1);
+		int idx = (int) Math.round(lo + t * (Math.min(hi, palette.length - 1) - lo));
+		return palette[Math.max(0, Math.min(palette.length - 1, idx))] & 0xFFFFFF;
 	}
 
 	/** Reads a horizontal palette strip into ARGB colours, left to right. */

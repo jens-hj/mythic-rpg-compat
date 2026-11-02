@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/peridot_forged_ruby/rogues/netherite_berserker_armor_head"
+  }
+}

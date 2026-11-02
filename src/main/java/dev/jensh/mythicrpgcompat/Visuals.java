@@ -10,8 +10,9 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Keeps an upgraded stack's look in line with its upgrades: the item model and, for armor, the
- * armor_model_api texture. The gem's colour wins when a piece is both forged and infused, so the
- * order of smithing doesn't matter.
+ * armor_model_api texture. A piece that is both forged and infused gets the two-tone variant
+ * {@code <gem>_<forge variant>} (forge colours on the dark shades, gem colours on the light ones),
+ * whatever the order of smithing.
  */
 public final class Visuals {
 	private static final String ARMOR_API = "armor_model_api";
@@ -22,10 +23,13 @@ public final class Visuals {
 
 	public static @Nullable String variant(ItemStack stack) {
 		Gem gem = Infusion.gem(stack);
+		Forge forge = Infusion.forge(stack);
+		if (gem != null && forge != null) {
+			return gem.getSerializedName() + "_" + forge.variant();
+		}
 		if (gem != null) {
 			return gem.getSerializedName();
 		}
-		Forge forge = Infusion.forge(stack);
 		return forge == null ? null : forge.variant();
 	}
 

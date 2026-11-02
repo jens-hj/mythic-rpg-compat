@@ -8,6 +8,7 @@ recoloured textures are produced at runtime by the client.
 Two kinds of upgrade, each a "variant" with its own recoloured models/textures:
   * gems   (Mythic Upgrades): every infusable item, recipe = Mythic template + gem ingot
   * forges (Better Nether/End): Netherite class armor only, recipe from infusables.json
+  * gem + forge pairs: class armor carrying both, two-tone; models only (no recipe)
 
 Usage: scripts/gen_data.py [JAR ...]
 Without arguments, jars are looked up in the Gradle cache (run a build first).
@@ -202,7 +203,8 @@ def main():
             ns, path = ns_split(ref, "minecraft")
             return f"{MOD}:{path.split('/', 1)[0]}/{variant}/{ns}/{path.split('/', 1)[1]}"
 
-        variants = gems + (forge_keys if armor_set else [])
+        # Class armor also gets the forge variants and the two-tone gem + forge pairs.
+        variants = gems + (forge_keys + [f"{g}_{f}" for g in gems for f in forge_keys] if armor_set else [])
         for variant in variants:
             # Item model definition
             d = json.loads(json.dumps(definition))
@@ -222,8 +224,8 @@ def main():
                 write(os.path.join(CLIENT, f"assets/{MOD}/models/{mpath}.json"), md)
 
         def components(variant, own):
-            # The model/texture shown in recipe viewers; Visuals.apply corrects them after
-            # crafting when the piece carries both a gem and a forge.
+            # The model/texture shown in recipe viewers; Visuals.apply switches to the two-tone
+            # variant after crafting when the piece carries both a gem and a forge.
             c = {**own, "minecraft:item_model": f"{MOD}:{variant}/{mod}/{item}"}
             if armor_set:
                 c["minecraft:custom_data"] = {

@@ -141,10 +141,10 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				ItemStack gemThenForge = forge(server, "archers", chest, Forge.AETERNIUM, infuse(server, "archers", chest, Gem.RUBY, null));
 				for (ItemStack both : new ItemStack[]{forgeThenGem, gemThenForge}) {
 					check(both.get(ModComponents.INFUSION) == Gem.RUBY && both.get(ModComponents.FORGED) == Forge.AETERNIUM, "stacked components");
-					check(String.valueOf(both.get(DataComponents.ITEM_MODEL)).equals("mythic_rpg_compat:ruby/archers/" + chest), "stacked model is the gem's, was " + both.get(DataComponents.ITEM_MODEL));
+					check(String.valueOf(both.get(DataComponents.ITEM_MODEL)).equals("mythic_rpg_compat:ruby_forged_aeternium/archers/" + chest), "stacked model is two-tone, was " + both.get(DataComponents.ITEM_MODEL));
 					String tex = both.getOrDefault(DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag()
 							.getCompoundOrEmpty("armor_model_api").getStringOr("texture", "");
-					check(tex.equals("mythic_rpg_compat:textures/armor/ruby/archers/netherite_ranger_armor.png"), "stacked armor texture is the gem's, was " + tex);
+					check(tex.equals("mythic_rpg_compat:textures/armor/ruby_forged_aeternium/archers/netherite_ranger_armor.png"), "stacked armor texture is two-tone, was " + tex);
 					check(Math.abs(modifierSums(both).get(ranged) - plainMods.get(ranged) * 1.40) < 1e-6, "stacked ranged damage x1.40");
 				}
 			});
@@ -198,7 +198,8 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				check(forgedLines.stream().anyMatch(l -> l.contains("Forged: Aeternium")), "tooltip shows forge");
 				for (String id : new String[]{"item/ruby/archers/netherite_ranger_armor_chest", "item/sapphire/rogues/netherite_dagger", "item/topaz/archers/netherite_longbow_pulling_2",
 						"item/forged_aeternium/archers/netherite_ranger_armor_chest", "item/forged_ruby/wizards/netherite_frost_robe_head",
-						"item/sapphire/paladins/ruby_claymore", "item/jade/archers/crystal_longbow_pulling_1"}) {
+						"item/sapphire/paladins/ruby_claymore", "item/jade/archers/crystal_longbow_pulling_1",
+						"item/ruby_forged_aeternium/archers/netherite_ranger_armor_chest", "item/jade_forged_ruby/paladins/netherite_crusader_armor_feet"}) {
 					Identifier sprite = Identifier.fromNamespaceAndPath("mythic_rpg_compat", id);
 					check(atlas.getSprite(sprite) != atlas.missingSprite(), "sprite " + sprite);
 				}
@@ -206,6 +207,8 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				check(mc.getTextureManager().getTexture(armorTex) instanceof DynamicTexture, "armor texture " + armorTex);
 				Identifier forgeTex = Identifier.fromNamespaceAndPath("mythic_rpg_compat", "textures/armor/forged_aeternium/archers/netherite_ranger_armor.png");
 				check(mc.getTextureManager().getTexture(forgeTex) instanceof DynamicTexture, "armor texture " + forgeTex);
+				Identifier stackedTex = Identifier.fromNamespaceAndPath("mythic_rpg_compat", "textures/armor/sapphire_forged_ruby/paladins/netherite_crusader_armor.png");
+				check(mc.getTextureManager().getTexture(stackedTex) instanceof DynamicTexture, "armor texture " + stackedTex);
 			});
 
 			// Screenshots for visual review.

@@ -6,9 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.jensh.mythicrpgcompat.MythicRpgCompat;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.atlas.SpriteResourceLoader;
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
@@ -19,7 +17,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Atlas sprite source {@code mythic_rpg_compat:gem_recolor}: adds a recoloured copy of each listed
- * texture for each variant (gems, forge tiers), read from whatever mods are installed.
+ * texture for each variant (gems, forge tiers, gem + forge pairs), read from whatever mods are installed.
  */
 public record GemRecolorSource(List<RecolorVariant> variants, List<RecolorEntry> textures) implements SpriteSource {
 	public static final Identifier TYPE = MythicRpgCompat.id("gem_recolor");
@@ -30,14 +28,8 @@ public record GemRecolorSource(List<RecolorVariant> variants, List<RecolorEntry>
 
 	@Override
 	public void run(ResourceManager manager, Output output) {
-		Map<RecolorVariant, int[]> palettes = new HashMap<>();
-		for (RecolorVariant variant : variants) {
-			int[] palette = variant.loadPalette(manager);
-			if (palette != null) {
-				palettes.put(variant, palette); // missing when the variant's mod isn't installed
-			}
-		}
-		if (palettes.isEmpty()) {
+		Recolors recolors = new Recolors(variants, manager);
+		if (recolors.isEmpty()) {
 			return;
 		}
 
@@ -47,14 +39,10 @@ public record GemRecolorSource(List<RecolorVariant> variants, List<RecolorEntry>
 				if (source == null) {
 					continue; // mod not installed
 				}
-				for (var variant : palettes.entrySet()) {
-					if (!entry.accepts(variant.getKey())) {
-						continue;
-					}
-					Identifier id = entry.recolored(variant.getKey().key());
-					NativeImage image = GemRecolor.recolor(source, twin, variant.getValue(), entry.diffMode());
+				recolors.forEach(entry, source, twin, (variant, image) -> {
+					Identifier id = entry.recolored(variant);
 					output.add(id, new Loader(id, image));
-				}
+				});
 			} catch (IOException e) {
 				MythicRpgCompat.LOGGER.warn("Could not recolour {}", entry.texture(), e);
 			}

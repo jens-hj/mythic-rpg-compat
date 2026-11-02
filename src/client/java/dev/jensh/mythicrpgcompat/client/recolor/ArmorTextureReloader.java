@@ -49,25 +49,15 @@ public final class ArmorTextureReloader extends SimpleReloadListener<Map<Identif
 		}
 		try (Reader reader = manifestResource.get().openAsReader()) {
 			Manifest manifest = Manifest.CODEC.parse(JsonOps.INSTANCE, JsonParser.parseReader(reader)).getOrThrow();
-			Map<RecolorVariant, int[]> palettes = new HashMap<>();
-			for (RecolorVariant variant : manifest.variants()) {
-				int[] palette = variant.loadPalette(manager);
-				if (palette != null) {
-					palettes.put(variant, palette);
-				}
-			}
+			Recolors recolors = new Recolors(manifest.variants(), manager);
 			for (RecolorEntry entry : manifest.textures()) {
 				try (NativeImage source = GemRecolor.read(manager, RecolorEntry.file(entry.texture()));
 					 NativeImage twin = entry.twin().isPresent() ? GemRecolor.read(manager, RecolorEntry.file(entry.twin().get())) : null) {
 					if (source == null) {
 						continue;
 					}
-					for (var variant : palettes.entrySet()) {
-						if (entry.accepts(variant.getKey())) {
-							images.put(RecolorEntry.file(entry.recolored(variant.getKey().key())),
-									GemRecolor.recolor(source, twin, variant.getValue(), entry.diffMode()));
-						}
-					}
+					recolors.forEach(entry, source, twin,
+							(variant, image) -> images.put(RecolorEntry.file(entry.recolored(variant)), image));
 				}
 			}
 		} catch (IOException | RuntimeException e) {
