@@ -21,11 +21,11 @@
           udev
           wayland
           libxkbcommon
-          xorg.libX11
-          xorg.libXcursor
-          xorg.libXrandr
-          xorg.libXxf86vm
-          xorg.libXext
+          libx11
+          libxcursor
+          libxrandr
+          libxxf86vm
+          libxext
         ];
       in {
         devShells.default = pkgs.mkShell {
