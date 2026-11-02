@@ -165,10 +165,16 @@ tasks.named("modrinthSyncBody") { notCompatibleWithConfigurationCache("Minotaur 
 // Better End's library (wover) shows a welcome screen on first launch, which would leave client
 // gametests stuck off the title screen. Mark it as already shown in the test run directory.
 def woverClientConfig = layout.buildDirectory.file("run/clientGameTest/config/wover/client.json")
+def gameTestOptions = layout.buildDirectory.file("run/clientGameTest/options.txt")
 tasks.named("runClientGameTest") {
 	doFirst {
 		def file = woverClientConfig.get().asFile
 		file.parentFile.mkdirs()
 		file.text = '{"internal":{"did_present_welcome_screen":true},"loading":{"disable_experimental_warning":true}}\n'
+
+		// Mute the game during test runs.
+		def options = gameTestOptions.get().asFile
+		def lines = options.exists() ? options.readLines().findAll { !it.startsWith("soundCategory_master:") } : []
+		options.text = (lines + "soundCategory_master:0.0").join("\n") + "\n"
 	}
 }
