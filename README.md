@@ -9,9 +9,11 @@ same item back, plus:
 
 - **Mythic effects.** Infused armor counts as that gem's Mythic armor piece for set effects
   (partial sets work too). Infused weapons trigger the gem's on-hit effect, just like a Mythic sword.
-- **Your class gear stays intact.** The look, name, ranged/spell stats, enchantments and trims
-  are all kept. Mythic's armor and toughness are added on top of the item's own (they currently
-  match Netherite's).
+- **Better stats.** Infused armor gets its own class attributes (ranged damage, spell power, ...)
+  boosted by 25% and +1 armor toughness. Everything else is kept: look, name, enchantments, trims
+  and socketed gems.
+- **An extra gem socket** (with the Jewelry mod). Added once on the first infusion; gear infused
+  with an older version gets it the next time it sits in a player's inventory.
 - **Gem colours.** The dark netherite parts of the item icon and the worn armor are recoloured
   with the gem's palette.
 

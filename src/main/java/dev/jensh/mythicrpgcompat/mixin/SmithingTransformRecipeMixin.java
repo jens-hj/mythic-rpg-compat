@@ -1,7 +1,6 @@
 package dev.jensh.mythicrpgcompat.mixin;
 
 import dev.jensh.mythicrpgcompat.Infusion;
-import dev.jensh.mythicrpgcompat.ModComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.minecraft.world.item.crafting.SmithingTransformRecipe;
@@ -15,9 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class SmithingTransformRecipeMixin {
 	@Inject(method = "assemble(Lnet/minecraft/world/item/crafting/SmithingRecipeInput;)Lnet/minecraft/world/item/ItemStack;", at = @At("RETURN"))
 	private void mythicRpgCompat$firstInfusion(SmithingRecipeInput input, CallbackInfoReturnable<ItemStack> cir) {
-		ItemStack result = cir.getReturnValue();
-		if (result.has(ModComponents.INFUSION) && !input.base().has(ModComponents.INFUSION)) {
-			Infusion.onFirstInfusion(result);
-		}
+		Infusion.grantPerks(cir.getReturnValue());
 	}
 }

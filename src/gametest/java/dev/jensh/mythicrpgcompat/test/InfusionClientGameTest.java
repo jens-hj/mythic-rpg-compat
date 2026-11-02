@@ -98,6 +98,23 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				check(p1 == p0 + 1 && p2 == p1, "one extra socket on first infusion only");
 			});
 
+			// Gear infused by older versions (no perks marker) gets the socket once from inventory ticks.
+			int legacyBase = sp.getServer().computeOnServer(server -> {
+				ItemStack legacy = rpg("archers", "netherite_ranger_armor_legs");
+				legacy.set(ModComponents.INFUSION, Gem.JADE);
+				player(server).getInventory().setItem(20, legacy);
+				return sockets(rpg("archers", "netherite_ranger_armor_legs"));
+			});
+			context.waitTicks(10);
+			int[] legacyAfter = sp.getServer().computeOnServer(server -> {
+				ItemStack s1 = player(server).getInventory().getItem(20);
+				return new int[]{sockets(s1), s1.has(ModComponents.PERKS_GRANTED) ? 1 : 0};
+			});
+			context.waitTicks(10);
+			int legacyLater = sp.getServer().computeOnServer(server -> sockets(player(server).getInventory().getItem(20)));
+			log("legacy sockets base=%d after=%d marker=%d later=%d", legacyBase, legacyAfter[0], legacyAfter[1], legacyLater);
+			check(legacyAfter[0] == legacyBase + 1 && legacyAfter[1] == 1 && legacyLater == legacyAfter[0], "legacy infused gear upgraded once");
+
 			// Armor set effects: infused ranger set == real Mythic set of the same gem.
 			for (Gem gem : new Gem[]{Gem.RUBY, Gem.SAPPHIRE, Gem.JADE, Gem.TOPAZ}) {
 				Map<String, Integer> real = wearAndRecord(context, sp, (server, i) -> new ItemStack(gem.mythicItem(MYTHIC_PIECES[i])));

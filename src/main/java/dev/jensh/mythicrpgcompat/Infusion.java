@@ -103,8 +103,16 @@ public final class Infusion {
 	private static final java.util.Set<Holder<Attribute>> BASE_ARMOR_STATS =
 			java.util.Set.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS, Attributes.KNOCKBACK_RESISTANCE);
 
-	/** Runs once when a piece is infused for the first time (not when swapping gems). */
-	public static void onFirstInfusion(ItemStack stack) {
+	/**
+	 * Grants one-time infusion perks (an extra Jewelry gem socket) if this infused stack hasn't had
+	 * them yet. Called on first infusion, and from inventory ticks to upgrade gear infused by older
+	 * versions of this mod. Swapping gems keeps the marker, so perks are never granted twice.
+	 */
+	public static void grantPerks(ItemStack stack) {
+		if (gem(stack) == null || stack.has(ModComponents.PERKS_GRANTED)) {
+			return;
+		}
+		stack.set(ModComponents.PERKS_GRANTED, net.minecraft.util.Unit.INSTANCE);
 		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("jewelry")) {
 			JewelryCompat.addSocket(stack);
 		}
