@@ -97,6 +97,15 @@ public final class GemRecolor {
 		return readPalette(manager, Identifier.fromNamespaceAndPath("mythicupgrades", "textures/" + gem + "_palette.png"));
 	}
 
+	/** The gem's palette, or null when Mythic Upgrades (and so its palettes) isn't installed. */
+	public static int @Nullable [] gemPaletteOrNull(ResourceManager manager, String gem) {
+		try {
+			return gemPalette(manager, gem);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
 	public static @Nullable NativeImage read(ResourceManager manager, Identifier file) throws IOException {
 		Optional<Resource> resource = manager.getResource(file);
 		if (resource.isEmpty()) {

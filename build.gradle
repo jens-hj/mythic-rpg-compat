@@ -137,12 +137,12 @@ modrinth {
 	syncBodyFrom = providers.fileContents(layout.projectDirectory.file("docs/MODRINTH.md")).asText
 	dependencies {
 		required.project "fabric-api"
-		required.project "mythic-upgrades"
 		required.project "armor-model-api"
 		optional.project "archers"
 		optional.project "paladins-and-priests"
 		optional.project "wizards"
 		optional.project "rogues-and-warriors"
+		optional.project "mythic-upgrades"
 		optional.project "jewelry"
 	}
 }

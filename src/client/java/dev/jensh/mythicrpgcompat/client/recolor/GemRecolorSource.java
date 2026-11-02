@@ -31,12 +31,13 @@ public record GemRecolorSource(List<String> gems, List<RecolorEntry> textures) i
 	@Override
 	public void run(ResourceManager manager, Output output) {
 		Map<String, int[]> palettes = new HashMap<>();
-		try {
-			for (String gem : gems) {
-				palettes.put(gem, GemRecolor.gemPalette(manager, gem));
+		for (String gem : gems) {
+			int[] palette = GemRecolor.gemPaletteOrNull(manager, gem);
+			if (palette != null) {
+				palettes.put(gem, palette); // missing when Mythic Upgrades isn't installed
 			}
-		} catch (IOException e) {
-			MythicRpgCompat.LOGGER.error("Could not load gem palettes; infused item icons will be missing", e);
+		}
+		if (palettes.isEmpty()) {
 			return;
 		}
 
@@ -46,7 +47,7 @@ public record GemRecolorSource(List<String> gems, List<RecolorEntry> textures) i
 				if (source == null) {
 					continue; // mod not installed
 				}
-				for (String gem : gems) {
+				for (String gem : palettes.keySet()) {
 					Identifier id = entry.recolored(gem);
 					NativeImage image = GemRecolor.recolor(source, twin, palettes.get(gem));
 					output.add(id, new Loader(id, image));

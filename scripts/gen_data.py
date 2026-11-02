@@ -182,7 +182,7 @@ def main():
                     "armor_model_api": {"texture": f"{MOD}:textures/armor/{gem}/{mod}/{armor_set}.png"}
                 }
             write(os.path.join(MAIN, f"data/{MOD}/recipe/infuse/{mod}/{item}_{gem}.json"), {
-                "fabric:load_conditions": [{"condition": "fabric:all_mods_loaded", "values": [mod]}],
+                "fabric:load_conditions": [{"condition": "fabric:all_mods_loaded", "values": [mod, "mythicupgrades"]}],
                 "type": "minecraft:smithing_transform",
                 "template": TEMPLATE,
                 "base": f"{mod}:{item}",

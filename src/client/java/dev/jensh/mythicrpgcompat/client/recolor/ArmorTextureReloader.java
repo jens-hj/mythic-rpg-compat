@@ -56,8 +56,10 @@ public final class ArmorTextureReloader extends SimpleReloadListener<Map<Identif
 						continue;
 					}
 					for (String gem : manifest.gems()) {
-						images.put(RecolorEntry.file(entry.recolored(gem)),
-								GemRecolor.recolor(source, twin, GemRecolor.gemPalette(manager, gem)));
+						int[] palette = GemRecolor.gemPaletteOrNull(manager, gem);
+						if (palette != null) {
+							images.put(RecolorEntry.file(entry.recolored(gem)), GemRecolor.recolor(source, twin, palette));
+						}
 					}
 				}
 			}

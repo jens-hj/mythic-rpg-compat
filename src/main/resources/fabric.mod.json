@@ -27,10 +27,12 @@
 		"minecraft": "~26.3",
 		"java": ">=25",
 		"fabric-api": "*",
-		"mythicupgrades": ">=5.1.1",
 		"armor_model_api": ">=1.1.2"
 	},
 	"recommends": {
+		"mythicupgrades": ">=5.1.1",
+		"betterend": "*",
+		"betternether": "*",
 		"archers": "*",
 		"paladins": "*",
 		"wizards": "*",
