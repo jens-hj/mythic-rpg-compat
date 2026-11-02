@@ -64,6 +64,7 @@ dependencies {
 	localRuntime "maven.modrinth:bundle-api:${project.bundle_api_version}"
 	localRuntime "maven.modrinth:player-animation-library:${project.player_animation_library_version}"
 	localRuntime "maven.modrinth:rei:${project.rei_version}"
+	localRuntime "maven.modrinth:architectury-api:${project.architectury_version}"
 }
 
 processResources {
