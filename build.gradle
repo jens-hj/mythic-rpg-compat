@@ -58,6 +58,10 @@ dependencies {
 	compileOnly "maven.modrinth:jewelry:${project.jewelry_version}"
 	localRuntime "maven.modrinth:jewelry:${project.jewelry_version}"
 
+	// Spell Engine: optional, used to tell direct spell hits from splash for gem procs
+	compileOnly "maven.modrinth:spell-engine:${project.spell_engine_version}"
+	compileOnly "maven.modrinth:spell-power:${project.spell_power_version}"
+
 	// Better End / Better Nether: only referenced by id, present in the dev client for testing
 	localRuntime "maven.modrinth:betterend:${project.betterend_version}"
 	localRuntime "maven.modrinth:betternether:${project.betternether_version}"
