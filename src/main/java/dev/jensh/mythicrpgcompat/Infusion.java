@@ -11,11 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.ArmorMaterials;
-import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.Equippable;
-import net.trique.mythicupgrades.item.MythicArmorMaterials;
 import org.jspecify.annotations.Nullable;
 
 /** Behaviour of stacks carrying the {@link ModComponents#INFUSION} component. */
@@ -67,19 +63,11 @@ public final class Infusion {
 		if (gem == null || slot == null || slot != querySlot) {
 			return;
 		}
-		ArmorType type = switch (slot) {
-			case HEAD -> ArmorType.HELMET;
-			case CHEST -> ArmorType.CHESTPLATE;
-			case LEGS -> ArmorType.LEGGINGS;
-			default -> ArmorType.BOOTS;
-		};
-		ArmorMaterial mythic = material(gem);
-		ArmorMaterial netherite = ArmorMaterials.NETHERITE;
 		var id = MythicRpgCompat.id("infusion_" + slot.getName());
-
-		double armor = mythic.defense().getOrDefault(type, 0) - netherite.defense().getOrDefault(type, 0);
-		double toughness = mythic.toughness() - netherite.toughness() + BONUS_TOUGHNESS;
-		double knockback = mythic.knockbackResistance() - netherite.knockbackResistance();
+		ReferenceStats.Base delta = ReferenceStats.overNetherite(gem.surrogate(slot), slot);
+		double armor = delta.armor();
+		double toughness = delta.toughness() + BONUS_TOUGHNESS;
+		double knockback = delta.knockback();
 		if (armor != 0) {
 			consumer.accept(Attributes.ARMOR, new AttributeModifier(id, armor, AttributeModifier.Operation.ADD_VALUE));
 		}
@@ -125,18 +113,5 @@ public final class Infusion {
 		if (slot != null && EquipmentSlotGroup.bySlot(slot).equals(group)) {
 			forEachBonus(stack, slot, consumer);
 		}
-	}
-
-	private static ArmorMaterial material(Gem gem) {
-		return switch (gem) {
-			case AMETRINE -> MythicArmorMaterials.AMETRINE;
-			case AQUAMARINE -> MythicArmorMaterials.AQUAMARINE;
-			case CITRINE -> MythicArmorMaterials.CITRINE;
-			case JADE -> MythicArmorMaterials.JADE;
-			case PERIDOT -> MythicArmorMaterials.PERIDOT;
-			case RUBY -> MythicArmorMaterials.RUBY;
-			case SAPPHIRE -> MythicArmorMaterials.SAPPHIRE;
-			case TOPAZ -> MythicArmorMaterials.TOPAZ;
-		};
 	}
 }
