@@ -45,16 +45,25 @@ dependencies {
 	include implementation("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")
 	annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}"
 
-	// Hard deps: compiled against, user installs them
+	// Mythic Upgrades: optional. -PnoMythic leaves it out of the dev client to test that.
 	compileOnly "maven.modrinth:mythic-upgrades:${project.mythicupgrades_version}"
+	if (!providers.gradleProperty("noMythic").isPresent()) {
+		localRuntime "maven.modrinth:mythic-upgrades:${project.mythicupgrades_version}"
+	}
 	compileOnly "maven.modrinth:armor-model-api:${project.armor_model_api_version}"
-	localRuntime "maven.modrinth:mythic-upgrades:${project.mythicupgrades_version}"
 	localRuntime "maven.modrinth:cloth-config:${project.cloth_config_version}"
 	localRuntime "maven.modrinth:armor-model-api:${project.armor_model_api_version}"
 
 	// Optional: Jewelry gem sockets (extra socket on first infusion)
 	compileOnly "maven.modrinth:jewelry:${project.jewelry_version}"
 	localRuntime "maven.modrinth:jewelry:${project.jewelry_version}"
+
+	// Better End / Better Nether: only referenced by id, present in the dev client for testing
+	localRuntime "maven.modrinth:betterend:${project.betterend_version}"
+	localRuntime "maven.modrinth:betternether:${project.betternether_version}"
+	localRuntime "maven.modrinth:bclib:${project.bclib_version}"
+	localRuntime "maven.modrinth:worldweaver:${project.worldweaver_version}"
+	localRuntime "maven.modrinth:wunderlib:${project.wunderlib_version}"
 
 	// RPG Series: only referenced by id, present in the dev client for testing
 	localRuntime "maven.modrinth:archers:${project.archers_version}"
@@ -143,6 +152,8 @@ modrinth {
 		optional.project "wizards"
 		optional.project "rogues-and-warriors"
 		optional.project "mythic-upgrades"
+		optional.project "betterend"
+		optional.project "betternether"
 		optional.project "jewelry"
 	}
 }
