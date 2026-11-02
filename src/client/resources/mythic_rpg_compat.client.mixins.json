@@ -2,7 +2,7 @@
 	"required": true,
 	"package": "dev.jensh.mythicrpgcompat.client.mixin",
 	"compatibilityLevel": "JAVA_25",
-	"client": [],
+	"client": ["SpriteSourcesAccessor"],
 	"injectors": {
 		"defaultRequire": 1
 	},
