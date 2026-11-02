@@ -1,5 +1,6 @@
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'com.modrinth.minotaur' version "${minotaur_version}"
 }
 
 base {
@@ -108,3 +109,44 @@ jar {
 		rename { "${it}_$projectName" }
 	}
 }
+
+// Publishing: ./gradlew modrinth (upload version), ./gradlew modrinthSyncBody (description).
+// Token from $MODRINTH_TOKEN or ~/.config/modrinth-token.
+def modrinthToken = providers.environmentVariable("MODRINTH_TOKEN").orElse(
+		providers.fileContents(layout.projectDirectory.file(
+				"${System.getProperty('user.home')}/.config/modrinth-token")).asText.map { it.trim() })
+
+// The section of CHANGELOG.md for the current version.
+def currentChangelog = providers.fileContents(layout.projectDirectory.file("CHANGELOG.md")).asText.map { text ->
+	def section = text.split(/(?m)^## /).find { it.startsWith("${project.version}\n") || it.startsWith("${project.version}\r") }
+	section ? section.substring(section.indexOf('\n') + 1).trim() : ""
+}
+
+modrinth {
+	token = modrinthToken
+	// ./gradlew modrinth -PmodrinthDryRun prints the upload instead of sending it
+	debugMode = providers.gradleProperty("modrinthDryRun").isPresent()
+	projectId = "mythic-rpg-compat"
+	versionNumber = project.version
+	versionName = "${project.version}"
+	versionType = "release"
+	uploadFile = jar
+	gameVersions = [project.minecraft_version]
+	loaders = ["fabric"]
+	changelog = currentChangelog
+	syncBodyFrom = providers.fileContents(layout.projectDirectory.file("docs/MODRINTH.md")).asText
+	dependencies {
+		required.project "fabric-api"
+		required.project "mythic-upgrades"
+		required.project "armor-model-api"
+		optional.project "archers"
+		optional.project "paladins-and-priests"
+		optional.project "wizards"
+		optional.project "rogues-and-warriors"
+		optional.project "jewelry"
+	}
+}
+
+// Minotaur reads Task.project at execution time
+tasks.named("modrinth") { notCompatibleWithConfigurationCache("Minotaur uses Task.project") }
+tasks.named("modrinthSyncBody") { notCompatibleWithConfigurationCache("Minotaur uses Task.project") }

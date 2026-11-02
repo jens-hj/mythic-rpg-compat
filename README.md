@@ -55,6 +55,14 @@ nix develop                      # JDK 25, Python + Pillow, GPU libs for the dev
 ./gradlew runClientGameTest      # end-to-end test, saves screenshots to build/run/clientGameTest/screenshots
 ```
 
+Publishing to Modrinth (token from `$MODRINTH_TOKEN` or `~/.config/modrinth-token`):
+
+```sh
+./gradlew modrinth -PmodrinthDryRun   # print what would be uploaded
+./gradlew modrinth                    # upload the version, changelog from CHANGELOG.md
+./gradlew modrinthSyncBody            # push docs/MODRINTH.md as the project description
+```
+
 After editing `infusables.json`, regenerate the recipes and models with `python3 scripts/gen_data.py`
 (it reads the RPG jars from the Gradle cache, so build once first).
 
