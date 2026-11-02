@@ -1,0 +1,95 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+base {
+	archivesName = 'mythic-rpg-compat'
+}
+
+repositories {
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = 'Modrinth'
+				url = 'https://api.modrinth.com/maven'
+			}
+		}
+		filter {
+			includeGroup 'maven.modrinth'
+		}
+	}
+	maven {
+		name = 'Bawnorton'
+		url = 'https://maven.bawnorton.com/releases'
+	}
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"mythic_rpg_compat" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// Lets us inject into Mythic Upgrades' own mixin handlers
+	include implementation("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")
+	annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}"
+
+	// Hard deps: compiled against, user installs them
+	compileOnly "maven.modrinth:mythic-upgrades:${project.mythicupgrades_version}"
+	compileOnly "maven.modrinth:armor-model-api:${project.armor_model_api_version}"
+	localRuntime "maven.modrinth:mythic-upgrades:${project.mythicupgrades_version}"
+	localRuntime "maven.modrinth:cloth-config:${project.cloth_config_version}"
+	localRuntime "maven.modrinth:armor-model-api:${project.armor_model_api_version}"
+
+	// RPG Series: only referenced by id, present in the dev client for testing
+	localRuntime "maven.modrinth:archers:${project.archers_version}"
+	localRuntime "maven.modrinth:paladins-and-priests:${project.paladins_version}"
+	localRuntime "maven.modrinth:wizards:${project.wizards_version}"
+	localRuntime "maven.modrinth:rogues-and-warriors:${project.rogues_version}"
+	localRuntime "maven.modrinth:spell-engine:${project.spell_engine_version}"
+	localRuntime "maven.modrinth:spell-power:${project.spell_power_version}"
+	localRuntime "maven.modrinth:ranged-weapon-api:${project.ranged_weapon_api_version}"
+	localRuntime "maven.modrinth:runes:${project.runes_version}"
+	localRuntime "maven.modrinth:structure-pool-api:${project.structure_pool_api_version}"
+	localRuntime "maven.modrinth:bundle-api:${project.bundle_api_version}"
+	localRuntime "maven.modrinth:player-animation-library:${project.player_animation_library_version}"
+	localRuntime "maven.modrinth:rei:${project.rei_version}"
+}
+
+processResources {
+	def version = project.version
+	inputs.property "version", version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	def projectName = project.name
+	inputs.property "projectName", projectName
+
+	from("LICENSE") {
+		rename { "${it}_$projectName" }
+	}
+}
