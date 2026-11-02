@@ -1,5 +1,6 @@
 package dev.jensh.mythicrpgcompat.test;
 
+import dev.jensh.mythicrpgcompat.Forge;
 import dev.jensh.mythicrpgcompat.Gem;
 import dev.jensh.mythicrpgcompat.ModComponents;
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 	@Override
 	public void runTest(ClientGameTestContext context) {
 		if (GalleryClientGameTest.ENABLED) {
+			return;
+		}
+		if (!net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("mythicupgrades")) {
+			runWithoutMythic(context);
 			return;
 		}
 		try (TestSingleplayerContext sp = context.worldBuilder().create()) {
@@ -102,6 +107,48 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				check(sockets(fresh) == sockets(rpg("archers", "netherite_ranger_armor_chest")), "infusion itself adds no socket");
 			});
 
+			// Bonus weapons (RPG Ruby/Aeternium/Crystal) take gems too.
+			sp.getServer().runOnServer(server -> {
+				ServerPlayer player = player(server);
+				ItemStack claymore = infuse(server, "paladins", "ruby_claymore", Gem.AQUAMARINE, null);
+				check(claymore.get(ModComponents.INFUSION) == Gem.AQUAMARINE, "ruby claymore infusion");
+				check(String.valueOf(claymore.get(DataComponents.ITEM_MODEL)).equals("mythic_rpg_compat:aquamarine/paladins/ruby_claymore"), "ruby claymore model, was " + claymore.get(DataComponents.ITEM_MODEL));
+				Map<String, Integer> real = hitAndRecord(player.level(), player, new ItemStack(Gem.AQUAMARINE.mythicItem("sword")));
+				Map<String, Integer> bonus = hitAndRecord(player.level(), player, claymore);
+				log("ruby claymore on-hit: mythic=%s infused=%s", real, bonus);
+				check(!real.isEmpty() && real.keySet().equals(bonus.keySet()), "ruby claymore on-hit effects match");
+				check(infuse(server, "rogues", "aeternium_glaive", Gem.JADE, null).get(ModComponents.INFUSION) == Gem.JADE, "aeternium glaive infusion");
+				check(infuse(server, "archers", "crystal_longbow", Gem.TOPAZ, null).get(ModComponents.INFUSION) == Gem.TOPAZ, "crystal longbow infusion");
+				player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+			});
+
+			// Forge tiers: stats, and stacking with a gem in either order.
+			sp.getServer().runOnServer(server -> {
+				String ranged = "ranged_weapon:damage";
+				String chest = "netherite_ranger_armor_chest";
+				Map<String, Double> plainMods = modifierSums(rpg("archers", chest));
+				for (Forge forge : Forge.values()) {
+					ItemStack forged = forge(server, "archers", chest, forge, null);
+					Map<String, Double> mods = modifierSums(forged);
+					log("%s forged chest modifiers %s", forge, mods);
+					check(forged.get(ModComponents.FORGED) == forge, forge + " forge component");
+					check(String.valueOf(forged.get(DataComponents.ITEM_MODEL)).equals("mythic_rpg_compat:" + forge.variant() + "/archers/" + chest), forge + " forged model");
+					check(Math.abs(mods.get(ranged) - plainMods.get(ranged) * 1.15) < 1e-6, forge + " ranged damage x1.15");
+					check(mods.getOrDefault("minecraft:armor_toughness", 0.0) >= plainMods.getOrDefault("minecraft:armor_toughness", 0.0) + 1, forge + " toughness +1");
+					check(mods.getOrDefault("minecraft:armor", 0.0) >= plainMods.getOrDefault("minecraft:armor", 0.0), forge + " armor not lower");
+				}
+				ItemStack forgeThenGem = infuse(server, "archers", chest, Gem.RUBY, forge(server, "archers", chest, Forge.AETERNIUM, null));
+				ItemStack gemThenForge = forge(server, "archers", chest, Forge.AETERNIUM, infuse(server, "archers", chest, Gem.RUBY, null));
+				for (ItemStack both : new ItemStack[]{forgeThenGem, gemThenForge}) {
+					check(both.get(ModComponents.INFUSION) == Gem.RUBY && both.get(ModComponents.FORGED) == Forge.AETERNIUM, "stacked components");
+					check(String.valueOf(both.get(DataComponents.ITEM_MODEL)).equals("mythic_rpg_compat:ruby/archers/" + chest), "stacked model is the gem's, was " + both.get(DataComponents.ITEM_MODEL));
+					String tex = both.getOrDefault(DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag()
+							.getCompoundOrEmpty("armor_model_api").getStringOr("texture", "");
+					check(tex.equals("mythic_rpg_compat:textures/armor/ruby/archers/netherite_ranger_armor.png"), "stacked armor texture is the gem's, was " + tex);
+					check(Math.abs(modifierSums(both).get(ranged) - plainMods.get(ranged) * 1.40) < 1e-6, "stacked ranged damage x1.40");
+				}
+			});
+
 			// Gear that 0.2.0 auto-socketed gets that empty socket removed again.
 			int legacyBase = sp.getServer().computeOnServer(server -> {
 				ItemStack legacy = rpg("archers", "netherite_ranger_armor_legs");
@@ -145,12 +192,20 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				check(lines.stream().anyMatch(l -> l.getString().contains("Infused: Ruby")), "tooltip shows infusion");
 
 				var atlas = mc.getAtlasManager().getAtlasOrThrow(AtlasIds.ITEMS);
-				for (String id : new String[]{"item/ruby/archers/netherite_ranger_armor_chest", "item/sapphire/rogues/netherite_dagger", "item/topaz/archers/netherite_longbow_pulling_2"}) {
+				ItemStack forged = rpg("archers", "netherite_ranger_armor_chest");
+				forged.set(ModComponents.FORGED, Forge.AETERNIUM);
+				List<String> forgedLines = forged.getTooltipLines(Item.TooltipContext.of(mc.level), mc.player, TooltipFlag.NORMAL).stream().map(Component::getString).toList();
+				check(forgedLines.stream().anyMatch(l -> l.contains("Forged: Aeternium")), "tooltip shows forge");
+				for (String id : new String[]{"item/ruby/archers/netherite_ranger_armor_chest", "item/sapphire/rogues/netherite_dagger", "item/topaz/archers/netherite_longbow_pulling_2",
+						"item/forged_aeternium/archers/netherite_ranger_armor_chest", "item/forged_ruby/wizards/netherite_frost_robe_head",
+						"item/sapphire/paladins/ruby_claymore", "item/jade/archers/crystal_longbow_pulling_1"}) {
 					Identifier sprite = Identifier.fromNamespaceAndPath("mythic_rpg_compat", id);
 					check(atlas.getSprite(sprite) != atlas.missingSprite(), "sprite " + sprite);
 				}
 				Identifier armorTex = Identifier.fromNamespaceAndPath("mythic_rpg_compat", "textures/armor/ruby/archers/netherite_ranger_armor.png");
 				check(mc.getTextureManager().getTexture(armorTex) instanceof DynamicTexture, "armor texture " + armorTex);
+				Identifier forgeTex = Identifier.fromNamespaceAndPath("mythic_rpg_compat", "textures/armor/forged_aeternium/archers/netherite_ranger_armor.png");
+				check(mc.getTextureManager().getTexture(forgeTex) instanceof DynamicTexture, "armor texture " + forgeTex);
 			});
 
 			// Screenshots for visual review.
@@ -190,18 +245,52 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 		log("all checks passed");
 	}
 
+	/** ./gradlew runClientGameTest -PnoMythic: forging works, gem recipes are skipped, nothing crashes. */
+	private void runWithoutMythic(ClientGameTestContext context) {
+		try (TestSingleplayerContext sp = context.worldBuilder().create()) {
+			sp.getConnection().waitForChunksRender();
+			sp.getServer().runOnServer(server -> {
+				ItemStack forged = forge(server, "archers", "netherite_ranger_armor_chest", Forge.AETERNIUM, null);
+				check(forged.get(ModComponents.FORGED) == Forge.AETERNIUM, "forge works without Mythic");
+				var gemKey = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("mythic_rpg_compat", "infuse/archers/netherite_ranger_armor_chest_ruby"));
+				check(server.getRecipeManager().byKey(gemKey).isEmpty(), "gem recipes skipped without Mythic");
+				player(server).setItemSlot(EquipmentSlot.CHEST, forged);
+			});
+			context.waitTicks(20);
+			context.runOnClient(mc -> {
+				Identifier forgeTex = Identifier.fromNamespaceAndPath("mythic_rpg_compat", "textures/armor/forged_aeternium/archers/netherite_ranger_armor.png");
+				check(mc.getTextureManager().getTexture(forgeTex) instanceof DynamicTexture, "forge armor texture without Mythic");
+			});
+		}
+		if (!failures.isEmpty()) {
+			throw new AssertionError("Failed checks:\n - " + String.join("\n - ", failures));
+		}
+		log("all checks passed (without Mythic)");
+	}
+
 	static ItemStack rpg(String mod, String item) {
 		return new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath(mod, item)));
 	}
 
 	static ItemStack infuse(net.minecraft.server.MinecraftServer server, String mod, String item, Gem gem, ItemStack base) {
-		var key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("mythic_rpg_compat",
-				"infuse/" + mod + "/" + item + "_" + gem.getSerializedName()));
-		Recipe<?> recipe = server.getRecipeManager().byKey(key).orElseThrow(() -> new AssertionError("missing recipe " + key)).value();
-		var input = new SmithingRecipeInput(
+		return smith(server, "infuse/" + mod + "/" + item + "_" + gem.getSerializedName(),
 				rpg("mythicupgrades", "mythic_upgrade_smithing_template"),
 				base == null ? rpg(mod, item) : base,
 				rpg("mythicupgrades", gem.getSerializedName() + "_ingot"));
+	}
+
+	static ItemStack forge(net.minecraft.server.MinecraftServer server, String mod, String item, Forge forge, ItemStack base) {
+		boolean ruby = forge == Forge.RUBY;
+		return smith(server, "forge/" + mod + "/" + item + "_" + forge.getSerializedName(),
+				ruby ? rpg("minecraft", "netherite_upgrade_smithing_template") : rpg("betterend", "plate_upgrade_smithing_template"),
+				base == null ? rpg(mod, item) : base,
+				ruby ? rpg("betternether", "nether_ruby") : rpg("betterend", "aeternium_forged_plate"));
+	}
+
+	private static ItemStack smith(net.minecraft.server.MinecraftServer server, String path, ItemStack template, ItemStack base, ItemStack addition) {
+		var key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("mythic_rpg_compat", path));
+		Recipe<?> recipe = server.getRecipeManager().byKey(key).orElseThrow(() -> new AssertionError("missing recipe " + key)).value();
+		var input = new SmithingRecipeInput(template, base, addition);
 		SmithingRecipe smithing = (SmithingRecipe) recipe;
 		if (!smithing.matches(input, null)) {
 			throw new AssertionError("recipe does not match " + key);
