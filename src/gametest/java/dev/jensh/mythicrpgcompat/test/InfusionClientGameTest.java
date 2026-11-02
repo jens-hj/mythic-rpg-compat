@@ -3,6 +3,7 @@ package dev.jensh.mythicrpgcompat.test;
 import dev.jensh.mythicrpgcompat.Forge;
 import dev.jensh.mythicrpgcompat.Gem;
 import dev.jensh.mythicrpgcompat.ModComponents;
+import dev.jensh.mythicrpgcompat.MythicParticles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -159,6 +160,23 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				spellTarget.discard();
 				player(server).setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			});
+
+			// Particle factors: a Jade-infused set spawns Jade aura particles; factor 0 drops them,
+			// the override brings them back.
+			var jade = MythicParticles.Group.JADE;
+			MythicParticles.set(null, Map.of(jade, 0.0));
+			equip(sp, (server, i) -> infuse(server, "paladins", "netherite_crusader_armor_" + RPG_SLOTS[i], Gem.JADE, null));
+			long sent0 = MythicParticles.sent(jade), dropped0 = MythicParticles.dropped(jade);
+			context.waitTicks(60);
+			long sent1 = MythicParticles.sent(jade), dropped1 = MythicParticles.dropped(jade);
+			MythicParticles.set(1.0, Map.of(jade, 0.0));
+			context.waitTicks(60);
+			long sent2 = MythicParticles.sent(jade);
+			MythicParticles.set(null, Map.of());
+			equip(sp, (server, i) -> ItemStack.EMPTY);
+			log("jade particles: factor 0 sent %d dropped %d; override 1 sent %d", sent1 - sent0, dropped1 - dropped0, sent2 - sent1);
+			check(sent1 == sent0 && dropped1 > dropped0, "jade particle factor 0 drops them");
+			check(sent2 > sent1, "particle override applies to all gems");
 
 			// Forge tiers: stats, and stacking with a gem in either order.
 			sp.getServer().runOnServer(server -> {
