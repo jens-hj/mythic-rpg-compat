@@ -22,7 +22,8 @@ import net.minecraft.world.item.ItemStack;
 /**
  * Renders the Modrinth gallery:
  * <ul>
- *   <li>one picture per class armor set: every gem variant on armor stands, plus plain Netherite</li>
+ *   <li>per class armor set, three pictures: every gem variant on armor stands around plain Netherite,
+ *       then the same forged to Ruby and to Aeternium (two-tone gem + forge) around the plain forged set</li>
  *   <li>one picture per forge tier: every class set forged, around the tier's own Better Nether/End armor</li>
  *   <li>a wall of Ruby/Aeternium/Crystal RPG weapons infused with each gem</li>
  * </ul>
@@ -103,7 +104,7 @@ public class GalleryClientGameTest implements FabricClientGameTest {
 			context.getInput().pressKey(options -> options.keyToggleGui);
 			Path out = Path.of("gallery");
 
-			// Gem variants of each class set.
+			// Each class set: gem variants, then gem variants forged to Ruby and to Aeternium.
 			tp(sp, o.getX() + 0.5, o.getY() + 4.5, o.getZ() + 7.0, 11);
 			Gem[] gems = Gem.values();
 			for (Kit kit : SETS) {
@@ -115,12 +116,24 @@ public class GalleryClientGameTest implements FabricClientGameTest {
 				}
 				stage(context, sp, o, spots);
 				shoot(context, out, kit.armor());
+
+				for (Forge forge : Forge.values()) {
+					String[] held = forge == Forge.RUBY ? kit.ruby() : kit.aeternium();
+					List<Spot> forged = new ArrayList<>();
+					for (int i = 0; i < 9; i++) {
+						Gem gem = gemAt(gems, i);
+						forged.add(new Spot(gem == null ? forgeBlock(forge) : "mythicupgrades:" + gem.getSerializedName() + "_block",
+								(server, stand) -> dress(server, stand, kit, gem, forge, held[0], held[1])));
+					}
+					stage(context, sp, o, forged);
+					shoot(context, out, kit.armor() + "_" + forge.getSerializedName());
+				}
 			}
 
 			// Forge tiers: all class sets, around the tier's own armor.
 			for (Forge forge : Forge.values()) {
 				boolean ruby = forge == Forge.RUBY;
-				String block = ruby ? "betternether:nether_ruby_block" : "betterend:aeternium_block";
+				String block = forgeBlock(forge);
 				String mod = ruby ? "betternether" : "betterend";
 				String material = ruby ? "flaming_ruby" : "aeternium";
 				List<Spot> spots = new ArrayList<>();
@@ -206,9 +219,14 @@ public class GalleryClientGameTest implements FabricClientGameTest {
 		}
 	}
 
+	private static String forgeBlock(Forge forge) {
+		return forge == Forge.RUBY ? "betternether:nether_ruby_block" : "betterend:aeternium_block";
+	}
+
 	private static ItemStack item(MinecraftServer server, String mod, String id, Gem gem, Forge forge) {
 		if (forge != null) {
-			return InfusionClientGameTest.forge(server, mod, id, forge, null);
+			ItemStack base = gem == null ? null : InfusionClientGameTest.infuse(server, mod, id, gem, null);
+			return InfusionClientGameTest.forge(server, mod, id, forge, base);
 		}
 		return gem == null ? InfusionClientGameTest.rpg(mod, id) : InfusionClientGameTest.infuse(server, mod, id, gem, null);
 	}
