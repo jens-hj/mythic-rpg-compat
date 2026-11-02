@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 public final class MixinPlugin implements IMixinConfigPlugin {
 	private static final Map<String, String> REQUIRED_MOD = Map.of(
 			"MythicLivingEntityMixinSquared", "mythicupgrades",
+			"MythicParticlesMixin", "mythicupgrades",
+			"NecoiumParticlesMixin", "mythicupgrades",
 			"GemSocketingMixin", "jewelry");
 
 	@Override

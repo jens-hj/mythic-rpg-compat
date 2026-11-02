@@ -16,5 +16,6 @@ public class MythicRpgCompat implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModComponents.init();
+		MythicParticles.load();
 	}
 }
