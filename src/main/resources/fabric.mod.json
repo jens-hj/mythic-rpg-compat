@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "mythic_rpg_compat",
 	"version": "${version}",
-	"name": "Mythic RPG Compat",
-	"description": "Infuse Netherite RPG Series gear with Mythic Upgrades gems.",
+	"name": "RPG Gear Upgrades",
+	"description": "Endgame upgrades for RPG Series gear: Mythic Upgrades gem infusion and Ruby/Aeternium forging from Better Nether and Better End.",
 	"authors": ["jens-hj"],
 	"contact": {
 		"sources": "https://github.com/jens-hj/mythic-rpg-compat",
