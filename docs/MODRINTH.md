@@ -28,7 +28,7 @@ The RPG Series already has Ruby and Aeternium **weapons**. This adds the matchin
 
 ## Stacking
 
-A piece can be **both forged and infused**, in either order. The bonuses add up (e.g. +40% class attributes and +2 toughness), the tooltip shows both, and the piece takes the **gem's colours**.
+A piece can be **both forged and infused**, in either order. The bonuses add up (e.g. +40% class attributes and +2 toughness), the tooltip shows both, and the piece gets a **two-tone look**: Ruby or Aeternium on the darker shades, the gem's colour on the lighter ones.
 
 ## Coloured gear
 

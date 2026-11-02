@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4.1
+- Forged and infused armor gets a two-tone look: the forge's colours on the dark shades, the gem's on the light ones.
+
 ## 0.4.0
 - Renamed to RPG Gear Upgrades. Mythic Upgrades is now optional.
 - Mythic gems also infuse the RPG Series' Ruby, Aeternium and Crystal weapons.

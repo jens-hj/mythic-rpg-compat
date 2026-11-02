@@ -31,7 +31,7 @@ Netherite class armor gets the tiers the RPG Series already has for weapons:
 Forged armor gets the material's armor stats over Netherite (read from Fireruby/Aeternium armor),
 +1 toughness and +15% on its own class attributes, and the netherite parts take the material's colour.
 
-A piece can be forged *and* infused, in either order: bonuses add up and the gem's colours win.
+A piece can be forged *and* infused, in either order: bonuses add up and the piece gets a two-tone look (forge colours on the dark shades, gem colours on the light ones).
 
 ## Supported gear
 
