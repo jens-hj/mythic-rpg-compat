@@ -14,6 +14,13 @@ public final class ModComponents {
 			DataComponentType.<Gem>builder().persistent(Gem.CODEC).networkSynchronized(Gem.STREAM_CODEC).build()
 	);
 
+	/** Which forge tier (Ruby, Aeternium) a piece of RPG class armor has been forged to. */
+	public static final DataComponentType<Forge> FORGED = Registry.register(
+			BuiltInRegistries.DATA_COMPONENT_TYPE,
+			MythicRpgCompat.id("forged"),
+			DataComponentType.<Forge>builder().persistent(Forge.CODEC).networkSynchronized(Forge.STREAM_CODEC).build()
+	);
+
 	/** Set by 0.2.0 on gear it auto-added a socket to; only kept so that socket can be removed again. */
 	public static final DataComponentType<Unit> PERKS_GRANTED = Registry.register(
 			BuiltInRegistries.DATA_COMPONENT_TYPE,
@@ -26,5 +33,6 @@ public final class ModComponents {
 
 	public static void init() {
 		ItemComponentTooltipProviderRegistry.addFirst(INFUSION);
+		ItemComponentTooltipProviderRegistry.addFirst(FORGED);
 	}
 }

@@ -1,6 +1,7 @@
 package dev.jensh.mythicrpgcompat.mixin;
 
 import dev.jensh.mythicrpgcompat.Infusion;
+import dev.jensh.mythicrpgcompat.Visuals;
 import java.util.function.BiConsumer;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,14 +19,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/** Adds Mythic armor stats to infused pieces, on top of their own (config-driven) modifiers. */
+/** Adds upgrade stats to infused/forged pieces, on top of their own (config-driven) modifiers. */
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-	/** Undo the auto-added socket from 0.2.0. Server side only; the change syncs to clients. */
+	/**
+	 * Undo the auto-added socket from 0.2.0, and fix the look of upgraded gear (stacked upgrades,
+	 * older versions). Server side only; the changes sync to clients.
+	 */
 	@Inject(method = "inventoryTick", at = @At("HEAD"))
-	private void mythicRpgCompat$revertLegacySocket(Level level, Entity owner, @Nullable EquipmentSlot slot, CallbackInfo ci) {
+	private void mythicRpgCompat$maintain(Level level, Entity owner, @Nullable EquipmentSlot slot, CallbackInfo ci) {
 		if (!level.isClientSide()) {
-			Infusion.revertLegacySocket((ItemStack) (Object) this);
+			ItemStack stack = (ItemStack) (Object) this;
+			Infusion.revertLegacySocket(stack);
+			if (stack.has(dev.jensh.mythicrpgcompat.ModComponents.INFUSION) || stack.has(dev.jensh.mythicrpgcompat.ModComponents.FORGED)) {
+				Visuals.apply(stack);
+			}
 		}
 	}
 

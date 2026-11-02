@@ -49,33 +49,51 @@ public final class Infusion {
 
 	/** How much infusion boosts an armor piece's own class attributes (ranged damage, spell power, ...). */
 	public static final double CLASS_STAT_BOOST = 0.25;
-	/** Flat armor toughness every infused armor piece gains. */
+	/**
+	 * How much forging boosts them. Mirrors the RPG Series' own step from Netherite to Ruby or
+	 * Aeternium weapons (e.g. claymore 11.5 to 13.0 damage, about 13%).
+	 */
+	public static final double FORGE_CLASS_STAT_BOOST = 0.15;
+	/** Flat armor toughness each upgrade (infusion, forge) adds to an armor piece. */
 	public static final double BONUS_TOUGHNESS = 1.0;
 
+	public static @Nullable Forge forge(ItemStack stack) {
+		return stack.isEmpty() ? null : stack.get(ModComponents.FORGED);
+	}
+
 	/**
-	 * Extra modifiers an infused armor piece grants: its own class attributes boosted by
-	 * {@link #CLASS_STAT_BOOST}, Mythic's material stats on top of Netherite's, and
-	 * {@link #BONUS_TOUGHNESS}.
+	 * Extra modifiers an upgraded armor piece grants, per upgrade it carries (gem infusion and/or
+	 * forge tier): the upgrade material's stats over Netherite, {@link #BONUS_TOUGHNESS}, and the
+	 * piece's own class attributes boosted by {@link #CLASS_STAT_BOOST} / {@link #FORGE_CLASS_STAT_BOOST}.
 	 */
 	public static void forEachBonus(ItemStack stack, EquipmentSlot querySlot, BiConsumer<Holder<Attribute>, AttributeModifier> consumer) {
-		Gem gem = gem(stack);
 		EquipmentSlot slot = armorSlot(stack);
-		if (gem == null || slot == null || slot != querySlot) {
+		if (slot == null || slot != querySlot) {
 			return;
 		}
-		var id = MythicRpgCompat.id("infusion_" + slot.getName());
-		ReferenceStats.Base delta = ReferenceStats.overNetherite(gem.surrogate(slot), slot);
-		double armor = delta.armor();
+		Gem gem = gem(stack);
+		if (gem != null) {
+			bonus(stack, slot, "infusion_", gem.surrogate(slot), CLASS_STAT_BOOST, consumer);
+		}
+		Forge forge = forge(stack);
+		if (forge != null) {
+			bonus(stack, slot, "forge_", forge.reference(slot), FORGE_CLASS_STAT_BOOST, consumer);
+		}
+	}
+
+	private static void bonus(ItemStack stack, EquipmentSlot slot, String idPrefix, Item reference, double classBoost,
+							  BiConsumer<Holder<Attribute>, AttributeModifier> consumer) {
+		var id = MythicRpgCompat.id(idPrefix + slot.getName());
+		ReferenceStats.Base delta = ReferenceStats.overNetherite(reference, slot);
 		double toughness = delta.toughness() + BONUS_TOUGHNESS;
-		double knockback = delta.knockback();
-		if (armor != 0) {
-			consumer.accept(Attributes.ARMOR, new AttributeModifier(id, armor, AttributeModifier.Operation.ADD_VALUE));
+		if (delta.armor() != 0) {
+			consumer.accept(Attributes.ARMOR, new AttributeModifier(id, delta.armor(), AttributeModifier.Operation.ADD_VALUE));
 		}
 		if (toughness != 0) {
 			consumer.accept(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, toughness, AttributeModifier.Operation.ADD_VALUE));
 		}
-		if (knockback != 0) {
-			consumer.accept(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, knockback, AttributeModifier.Operation.ADD_VALUE));
+		if (delta.knockback() != 0) {
+			consumer.accept(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, delta.knockback(), AttributeModifier.Operation.ADD_VALUE));
 		}
 
 		EquipmentSlotGroup group = EquipmentSlotGroup.bySlot(slot);
@@ -84,7 +102,7 @@ public final class Infusion {
 				continue;
 			}
 			AttributeModifier own = entry.modifier();
-			consumer.accept(entry.attribute(), new AttributeModifier(id, own.amount() * CLASS_STAT_BOOST, own.operation()));
+			consumer.accept(entry.attribute(), new AttributeModifier(id, own.amount() * classBoost, own.operation()));
 		}
 	}
 

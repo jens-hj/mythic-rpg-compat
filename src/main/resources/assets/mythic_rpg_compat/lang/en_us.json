@@ -8,5 +8,8 @@
   "gem.mythic_rpg_compat.ruby": "Ruby",
   "gem.mythic_rpg_compat.sapphire": "Sapphire",
   "gem.mythic_rpg_compat.topaz": "Topaz",
-  "tooltip.mythic_rpg_compat.extra_socket_mount": "Accepts an extra Socket Mount"
+  "tooltip.mythic_rpg_compat.extra_socket_mount": "Accepts an extra Socket Mount",
+  "tooltip.mythic_rpg_compat.forged": "Forged: %s",
+  "forge.mythic_rpg_compat.ruby": "Ruby",
+  "forge.mythic_rpg_compat.aeternium": "Aeternium"
 }
