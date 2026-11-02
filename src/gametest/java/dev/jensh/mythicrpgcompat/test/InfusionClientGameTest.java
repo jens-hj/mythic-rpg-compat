@@ -44,6 +44,9 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 
 	@Override
 	public void runTest(ClientGameTestContext context) {
+		if (GalleryClientGameTest.ENABLED) {
+			return;
+		}
 		try (TestSingleplayerContext sp = context.worldBuilder().create()) {
 			sp.getConnection().waitForChunksRender();
 			sp.getServer().runCommand("time set noon");
@@ -187,11 +190,11 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 		log("all checks passed");
 	}
 
-	private static ItemStack rpg(String mod, String item) {
+	static ItemStack rpg(String mod, String item) {
 		return new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath(mod, item)));
 	}
 
-	private static ItemStack infuse(net.minecraft.server.MinecraftServer server, String mod, String item, Gem gem, ItemStack base) {
+	static ItemStack infuse(net.minecraft.server.MinecraftServer server, String mod, String item, Gem gem, ItemStack base) {
 		var key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("mythic_rpg_compat",
 				"infuse/" + mod + "/" + item + "_" + gem.getSerializedName()));
 		Recipe<?> recipe = server.getRecipeManager().byKey(key).orElseThrow(() -> new AssertionError("missing recipe " + key)).value();

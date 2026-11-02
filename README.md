@@ -53,6 +53,7 @@ nix develop                      # JDK 25, Python + Pillow, GPU libs for the dev
 ./gradlew build
 ./gradlew runClient
 ./gradlew runClientGameTest      # end-to-end test, saves screenshots to build/run/clientGameTest/screenshots
+MYTHIC_RPG_GALLERY=1 ./gradlew runClientGameTest  # renders the Modrinth gallery to build/run/clientGameTest/gallery
 ```
 
 Publishing to Modrinth (token from `$MODRINTH_TOKEN` or `~/.config/modrinth-token`):

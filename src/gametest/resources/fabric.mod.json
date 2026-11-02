@@ -5,7 +5,10 @@
 	"name": "Mythic RPG Compat Tests",
 	"environment": "*",
 	"entrypoints": {
-		"fabric-client-gametest": ["dev.jensh.mythicrpgcompat.test.InfusionClientGameTest"]
+		"fabric-client-gametest": [
+			"dev.jensh.mythicrpgcompat.test.InfusionClientGameTest",
+			"dev.jensh.mythicrpgcompat.test.GalleryClientGameTest"
+		]
 	},
 	"depends": {
 		"mythic_rpg_compat": "*"
