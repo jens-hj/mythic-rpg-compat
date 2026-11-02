@@ -67,6 +67,16 @@ dependencies {
 	localRuntime "maven.modrinth:architectury-api:${project.architectury_version}"
 }
 
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "mythic_rpg_compat_test"
+		enableGameTests = false
+		enableClientGameTests = true
+		eula = true // By setting this to true, you agree to the Minecraft EULA.
+	}
+}
+
 processResources {
 	def version = project.version
 	inputs.property "version", version

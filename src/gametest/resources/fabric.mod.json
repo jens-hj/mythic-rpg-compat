@@ -1,0 +1,13 @@
+{
+	"schemaVersion": 1,
+	"id": "mythic_rpg_compat_test",
+	"version": "${version}",
+	"name": "Mythic RPG Compat Tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-client-gametest": ["dev.jensh.mythicrpgcompat.test.InfusionClientGameTest"]
+	},
+	"depends": {
+		"mythic_rpg_compat": "*"
+	}
+}
