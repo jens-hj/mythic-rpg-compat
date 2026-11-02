@@ -43,7 +43,7 @@ public final class GemRecolor {
 		return recolor(source, twin, palette, null, diffOnly);
 	}
 
-	/** Share of the masked shades (darkest first) that take the forge palette on a forged + infused piece. */
+	/** Share of the masked pixels (darkest shades first) that take the forge palette on a forged + infused piece. */
 	private static final double TWO_TONE_FORGE_SHARE = 0.4;
 
 	/**
@@ -56,6 +56,7 @@ public final class GemRecolor {
 		boolean useTwin = twin != null && twin.getWidth() == w && twin.getHeight() == h;
 		boolean[] mask = new boolean[w * h];
 		TreeMap<Double, Integer> byLuminance = new TreeMap<>();
+		java.util.HashMap<Integer, Integer> pixels = new java.util.HashMap<>();
 
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
@@ -68,6 +69,7 @@ public final class GemRecolor {
 				if (netherite) {
 					mask[y * w + x] = true;
 					byLuminance.putIfAbsent(luminance(c), c & 0xFFFFFF);
+					pixels.merge(c & 0xFFFFFF, 1, Integer::sum);
 				}
 			}
 		}
@@ -76,7 +78,7 @@ public final class GemRecolor {
 		Integer[] ranked = byLuminance.values().toArray(Integer[]::new);
 		int n = ranked.length;
 		java.util.HashMap<Integer, Integer> mapping = new java.util.HashMap<>();
-		int dark = base == null ? 0 : Math.max(1, (int) Math.round(n * TWO_TONE_FORGE_SHARE));
+		int dark = base == null ? 0 : darkShades(ranked, pixels);
 		for (int i = 0; i < n; i++) {
 			int rgb = i < dark
 					? pick(base, i, dark, PALETTE_LO, 6)
@@ -98,6 +100,31 @@ public final class GemRecolor {
 			}
 		}
 		return out;
+	}
+
+	/**
+	 * How many of the darkest shades cover {@link #TWO_TONE_FORGE_SHARE} of the masked pixels.
+	 * Counted by pixels, not shades: dark shades often cover only a few pixels (outlines, visors).
+	 */
+	private static int darkShades(Integer[] ranked, java.util.Map<Integer, Integer> pixels) {
+		if (ranked.length <= 1) {
+			return ranked.length;
+		}
+		int total = 0;
+		for (Integer c : ranked) {
+			total += pixels.getOrDefault(c, 0);
+		}
+		int dark = 0;
+		double seen = 0;
+		for (Integer c : ranked) {
+			int count = pixels.getOrDefault(c, 0);
+			if (seen + count / 2.0 >= total * TWO_TONE_FORGE_SHARE) {
+				break;
+			}
+			seen += count;
+			dark++;
+		}
+		return Math.max(1, Math.min(dark, ranked.length - 1));
 	}
 
 	/** Colour for shade {@code i} of {@code n}, spread over palette indices {@code lo..hi}. */
