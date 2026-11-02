@@ -161,3 +161,14 @@ modrinth {
 // Minotaur reads Task.project at execution time
 tasks.named("modrinth") { notCompatibleWithConfigurationCache("Minotaur uses Task.project") }
 tasks.named("modrinthSyncBody") { notCompatibleWithConfigurationCache("Minotaur uses Task.project") }
+
+// Better End's library (wover) shows a welcome screen on first launch, which would leave client
+// gametests stuck off the title screen. Mark it as already shown in the test run directory.
+def woverClientConfig = layout.buildDirectory.file("run/clientGameTest/config/wover/client.json")
+tasks.named("runClientGameTest") {
+	doFirst {
+		def file = woverClientConfig.get().asFile
+		file.parentFile.mkdirs()
+		file.text = '{"internal":{"did_present_welcome_screen":true},"loading":{"disable_experimental_warning":true}}\n'
+	}
+}
