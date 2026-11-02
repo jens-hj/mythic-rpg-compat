@@ -122,6 +122,44 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			});
 
+			// Ranged and spell hits: arrows carry the gem of the weapon that fired them; spells proc on
+			// their direct target only, once per target per second. Aquamarine's on-hit has no chance roll.
+			sp.getServer().runOnServer(server -> {
+				ServerPlayer player = player(server);
+				ServerLevel level = player.level();
+				Gem gem = Gem.AQUAMARINE;
+				var sword = hitAndRecord(level, player, new ItemStack(gem.mythicItem("sword"))).keySet();
+				player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+				ItemStack bow = infuse(server, "archers", "netherite_longbow", gem, null);
+				var crit = arrowHit(level, player, bow, true);
+				log("arrow on-hit: sword=%s crit arrow=%s", sword, crit);
+				check(!sword.isEmpty() && crit.keySet().equals(sword), "fully drawn arrow from infused bow procs the gem");
+				check(arrowHit(level, player, bow, false).isEmpty(), "partly drawn arrow does not proc");
+				check(arrowHit(level, player, infuse(server, "archers", "netherite_heavy_crossbow", gem, null), true).keySet().equals(sword), "crossbow bolt procs the gem");
+				check(arrowHit(level, player, rpg("archers", "netherite_longbow"), true).isEmpty(), "arrow from plain bow does not proc");
+
+				player.setItemSlot(EquipmentSlot.MAINHAND, infuse(server, "wizards", "staff_netherite_fire", gem, null));
+				var direct = hitOnce(level, player, zombie -> spellSource(player, false));
+				log("spell on-hit: direct=%s", direct);
+				check(direct.keySet().equals(sword), "direct spell hit procs the gem");
+				check(hitOnce(level, player, zombie -> spellSource(player, true)).isEmpty(), "splash spell hit does not proc");
+			});
+			// Cooldown: each hit is stronger than the last so it lands despite hurt invulnerability;
+			// the second (5 ticks later) must not proc, the third (25 ticks after the first) must.
+			var spellTarget = sp.getServer().computeOnServer(server -> spawnZombie(player(server).level(), player(server)));
+			var first = sp.getServer().computeOnServer(server -> spellHitKeeping(player(server), spellTarget, 1.0F));
+			context.waitTicks(5);
+			var second = sp.getServer().computeOnServer(server -> spellHitKeeping(player(server), spellTarget, 2.0F));
+			context.waitTicks(20);
+			var third = sp.getServer().computeOnServer(server -> spellHitKeeping(player(server), spellTarget, 3.0F));
+			check(first != null && !first.isEmpty() && second != null && second.isEmpty(),
+					"spell procs once per target per second (first=" + first + ", second=" + second + ")");
+			check(third != null && !third.isEmpty(), "spell procs again after the cooldown (" + third + ")");
+			sp.getServer().runOnServer(server -> {
+				spellTarget.discard();
+				player(server).setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+			});
+
 			// Forge tiers: stats, and stacking with a gem in either order.
 			sp.getServer().runOnServer(server -> {
 				String ranged = "ranged_weapon:damage";
@@ -372,6 +410,44 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 			zombie.discard();
 		}
 		return effects;
+	}
+
+	private static net.minecraft.world.entity.monster.zombie.Zombie spawnZombie(ServerLevel level, ServerPlayer player) {
+		var zombie = EntityTypes.ZOMBIE.create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+		zombie.setPos(player.getX() + 2, player.getY(), player.getZ());
+		zombie.setNoAi(true);
+		level.addFreshEntity(zombie);
+		return zombie;
+	}
+
+	/** Effects a fresh zombie ends up with after one hit with the given damage source. */
+	private static Map<String, Integer> hitOnce(ServerLevel level, ServerPlayer player,
+												java.util.function.Function<LivingEntity, net.minecraft.world.damagesource.DamageSource> source) {
+		var zombie = spawnZombie(level, player);
+		zombie.hurtServer(level, source.apply(zombie), 1.0F);
+		Map<String, Integer> result = effects(zombie);
+		zombie.discard();
+		return result;
+	}
+
+	private static Map<String, Integer> arrowHit(ServerLevel level, ServerPlayer player, ItemStack weapon, boolean crit) {
+		var arrow = new net.minecraft.world.entity.projectile.arrow.Arrow(level, player, new ItemStack(net.minecraft.world.item.Items.ARROW), weapon);
+		arrow.setCritArrow(crit);
+		return hitOnce(level, player, zombie -> player.damageSources().arrow(arrow, player));
+	}
+
+	private static net.minecraft.world.damagesource.DamageSource spellSource(ServerPlayer player, boolean indirect) {
+		var source = net.spell_power.api.SpellDamageSource.create(net.spell_power.api.SpellSchools.FIRE, player);
+		((net.spell_engine.entity.DamageSourceExtension) source).setSpellIndirect(indirect);
+		return source;
+	}
+
+	/** Direct spell hit on a kept target: clears its effects and hurt cooldown first, returns what the hit applied. */
+	private static Map<String, Integer> spellHitKeeping(ServerPlayer player, LivingEntity target, float damage) {
+		target.removeAllEffects();
+		boolean landed = target.hurtServer(player.level(), spellSource(player, false), damage);
+		log("kept-target spell hit landed=%s effects=%s", landed, effects(target));
+		return landed ? effects(target) : null; // null: the hit itself was blocked
 	}
 
 	private static Map<String, Integer> effects(LivingEntity entity) {
