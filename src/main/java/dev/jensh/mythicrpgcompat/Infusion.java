@@ -103,18 +103,20 @@ public final class Infusion {
 	private static final java.util.Set<Holder<Attribute>> BASE_ARMOR_STATS =
 			java.util.Set.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS, Attributes.KNOCKBACK_RESISTANCE);
 
+	/** How many extra Jewelry Socket Mounts an infused piece accepts beyond Jewelry's own limit. */
+	public static final int EXTRA_SOCKET_MOUNTS = 1;
+
 	/**
-	 * Grants one-time infusion perks (an extra Jewelry gem socket) if this infused stack hasn't had
-	 * them yet. Called on first infusion, and from inventory ticks to upgrade gear infused by older
-	 * versions of this mod. Swapping gems keeps the marker, so perks are never granted twice.
+	 * Undo for 0.2.0, which added an empty gem socket on infusion instead of raising the mount
+	 * limit: drop the marker and that socket if it is still empty.
 	 */
-	public static void grantPerks(ItemStack stack) {
-		if (gem(stack) == null || stack.has(ModComponents.PERKS_GRANTED)) {
+	public static void revertLegacySocket(ItemStack stack) {
+		if (!stack.has(ModComponents.PERKS_GRANTED)) {
 			return;
 		}
-		stack.set(ModComponents.PERKS_GRANTED, net.minecraft.util.Unit.INSTANCE);
+		stack.remove(ModComponents.PERKS_GRANTED);
 		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("jewelry")) {
-			JewelryCompat.addSocket(stack);
+			JewelryCompat.removeTrailingEmptySocket(stack);
 		}
 	}
 

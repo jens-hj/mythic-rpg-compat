@@ -88,20 +88,26 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				check(plainMods.containsKey(ranged) && Math.abs(infusedMods.get(ranged) - plainMods.get(ranged) * 1.25) < 1e-6, "ranged damage x1.25");
 			});
 
-			// Jewelry: first infusion adds one socket, re-gemming doesn't.
+			// Jewelry: plain piece takes 1 Socket Mount, infused piece takes 2.
 			sp.getServer().runOnServer(server -> {
-				ItemStack plainChest = rpg("archers", "netherite_ranger_armor_chest");
-				ItemStack first = infuse(server, "archers", "netherite_ranger_armor_chest", Gem.RUBY, null);
-				ItemStack regem = infuse(server, "archers", "netherite_ranger_armor_chest", Gem.TOPAZ, first);
-				int p0 = sockets(plainChest), p1 = sockets(first), p2 = sockets(regem);
-				log("sockets plain=%d infused=%d regem=%d", p0, p1, p2);
-				check(p1 == p0 + 1 && p2 == p1, "one extra socket on first infusion only");
+				ItemStack mountItem = rpg("jewelry", "socket_mount");
+				int plainMounts = mountsAccepted(rpg("archers", "netherite_ranger_armor_chest"), mountItem);
+				int infusedMounts = mountsAccepted(infuse(server, "archers", "netherite_ranger_armor_chest", Gem.RUBY, null), mountItem);
+				ItemStack fresh = infuse(server, "archers", "netherite_ranger_armor_chest", Gem.RUBY, null);
+				log("socket mounts accepted plain=%d infused=%d, sockets right after infusion=%d", plainMounts, infusedMounts, sockets(fresh));
+				check(plainMounts >= 1 && infusedMounts == plainMounts + 1, "infused gear accepts one extra socket mount");
+				check(sockets(fresh) == sockets(rpg("archers", "netherite_ranger_armor_chest")), "infusion itself adds no socket");
 			});
 
-			// Gear infused by older versions (no perks marker) gets the socket once from inventory ticks.
+			// Gear that 0.2.0 auto-socketed gets that empty socket removed again.
 			int legacyBase = sp.getServer().computeOnServer(server -> {
 				ItemStack legacy = rpg("archers", "netherite_ranger_armor_legs");
 				legacy.set(ModComponents.INFUSION, Gem.JADE);
+				legacy.set(ModComponents.PERKS_GRANTED, net.minecraft.util.Unit.INSTANCE);
+				var current = legacy.get(net.jewelry.gems.GemComponents.SOCKETS);
+				var list = new ArrayList<>(current == null ? List.<net.jewelry.gems.SocketsComponent.Socket>of() : current.sockets());
+				list.add(net.jewelry.gems.SocketsComponent.Socket.EMPTY);
+				legacy.set(net.jewelry.gems.GemComponents.SOCKETS, new net.jewelry.gems.SocketsComponent(list));
 				player(server).getInventory().setItem(20, legacy);
 				return sockets(rpg("archers", "netherite_ranger_armor_legs"));
 			});
@@ -110,10 +116,8 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				ItemStack s1 = player(server).getInventory().getItem(20);
 				return new int[]{sockets(s1), s1.has(ModComponents.PERKS_GRANTED) ? 1 : 0};
 			});
-			context.waitTicks(10);
-			int legacyLater = sp.getServer().computeOnServer(server -> sockets(player(server).getInventory().getItem(20)));
-			log("legacy sockets base=%d after=%d marker=%d later=%d", legacyBase, legacyAfter[0], legacyAfter[1], legacyLater);
-			check(legacyAfter[0] == legacyBase + 1 && legacyAfter[1] == 1 && legacyLater == legacyAfter[0], "legacy infused gear upgraded once");
+			log("legacy sockets base=%d after=%d marker=%d", legacyBase, legacyAfter[0], legacyAfter[1]);
+			check(legacyAfter[0] == legacyBase && legacyAfter[1] == 0, "0.2.0 auto-socket reverted");
 
 			// Armor set effects: infused ranger set == real Mythic set of the same gem.
 			for (Gem gem : new Gem[]{Gem.RUBY, Gem.SAPPHIRE, Gem.JADE, Gem.TOPAZ}) {
@@ -234,6 +238,15 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 		Map<String, Double> sums = new TreeMap<>();
 		stack.forEachModifier(EquipmentSlot.CHEST, (attribute, modifier) -> sums.merge(attribute.getRegisteredName(), modifier.amount(), Double::sum));
 		return sums;
+	}
+
+	private static int mountsAccepted(ItemStack target, ItemStack mountItem) {
+		int n = 0;
+		while (n < 10 && net.jewelry.gems.GemSocketing.canMount(target, mountItem, false)) {
+			target = net.jewelry.gems.GemSocketing.mount(target, mountItem, false);
+			n++;
+		}
+		return n;
 	}
 
 	private static int sockets(ItemStack stack) {

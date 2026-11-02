@@ -3,7 +3,6 @@ package dev.jensh.mythicrpgcompat;
 import java.util.ArrayList;
 import java.util.List;
 import net.jewelry.gems.GemComponents;
-import net.jewelry.gems.GemSockets;
 import net.jewelry.gems.SocketsComponent;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,14 +11,17 @@ final class JewelryCompat {
 	private JewelryCompat() {
 	}
 
-	/** Adds one empty, untyped gem socket, keeping existing sockets and the gems in them. */
-	static void addSocket(ItemStack stack) {
-		if (!GemSockets.enabled()) {
+	/** Removes the last socket if it is empty and untyped (the one 0.2.0 added). */
+	static void removeTrailingEmptySocket(ItemStack stack) {
+		SocketsComponent current = stack.get(GemComponents.SOCKETS);
+		if (current == null || current.sockets().isEmpty()) {
 			return;
 		}
-		SocketsComponent current = stack.get(GemComponents.SOCKETS);
-		List<SocketsComponent.Socket> sockets = new ArrayList<>(current == null ? List.of() : current.sockets());
-		sockets.add(SocketsComponent.Socket.EMPTY);
-		stack.set(GemComponents.SOCKETS, new SocketsComponent(sockets));
+		List<SocketsComponent.Socket> sockets = new ArrayList<>(current.sockets());
+		SocketsComponent.Socket last = sockets.getLast();
+		if (last.isEmpty() && last.type().isEmpty()) {
+			sockets.removeLast();
+			stack.set(GemComponents.SOCKETS, new SocketsComponent(sockets));
+		}
 	}
 }

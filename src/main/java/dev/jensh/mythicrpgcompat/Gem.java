@@ -75,5 +75,8 @@ public enum Gem implements StringRepresentable, TooltipProvider {
 				"tooltip.mythic_rpg_compat.infused",
 				Component.translatable("gem.mythic_rpg_compat." + name).withColor(color)
 		).withColor(0xAAAAAA));
+		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("jewelry")) {
+			consumer.accept(Component.translatable("tooltip.mythic_rpg_compat.extra_socket_mount").withColor(0xAAAAAA));
+		}
 	}
 }

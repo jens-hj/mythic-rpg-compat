@@ -14,7 +14,7 @@ public final class ModComponents {
 			DataComponentType.<Gem>builder().persistent(Gem.CODEC).networkSynchronized(Gem.STREAM_CODEC).build()
 	);
 
-	/** Marks gear whose one-time infusion perks (extra gem socket) have been granted. */
+	/** Set by 0.2.0 on gear it auto-added a socket to; only kept so that socket can be removed again. */
 	public static final DataComponentType<Unit> PERKS_GRANTED = Registry.register(
 			BuiltInRegistries.DATA_COMPONENT_TYPE,
 			MythicRpgCompat.id("perks_granted"),
