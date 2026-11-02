@@ -14,6 +14,7 @@
         # Native libs needed by `./gradlew runClient` (LWJGL / GLFW / OpenAL)
         runtimeLibs = with pkgs; [
           libGL
+          vulkan-loader
           glfw
           openal
           flite
@@ -31,7 +32,8 @@
         devShells.default = pkgs.mkShell {
           packages = [ jdk (pkgs.python3.withPackages (ps: [ ps.pillow ])) pkgs.git ];
           JAVA_HOME = "${jdk}";
-          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath runtimeLibs;
+          # /run/opengl-driver/lib holds the host GPU driver on NixOS
+          LD_LIBRARY_PATH = "/run/opengl-driver/lib:${pkgs.lib.makeLibraryPath runtimeLibs}";
         };
       });
 }
