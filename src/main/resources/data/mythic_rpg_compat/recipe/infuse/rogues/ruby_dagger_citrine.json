@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "rogues",
+        "mythicupgrades",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "rogues:ruby_dagger",
+  "addition": "mythicupgrades:citrine_ingot",
+  "result": {
+    "id": "rogues:ruby_dagger",
+    "components": {
+      "mythic_rpg_compat:infusion": "citrine",
+      "minecraft:item_model": "mythic_rpg_compat:citrine/rogues/ruby_dagger"
+    }
+  }
+}

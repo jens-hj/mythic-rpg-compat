@@ -1,0 +1,6 @@
+{
+  "parent": "mythic_rpg_compat:item/jade/archers/crystal_longbow",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/jade/archers/crystal_longbow_pulling_1"
+  }
+}

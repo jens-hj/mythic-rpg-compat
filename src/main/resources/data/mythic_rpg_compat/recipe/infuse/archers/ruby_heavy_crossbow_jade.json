@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers",
+        "mythicupgrades",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:ruby_heavy_crossbow",
+  "addition": "mythicupgrades:jade_ingot",
+  "result": {
+    "id": "archers:ruby_heavy_crossbow",
+    "components": {
+      "mythic_rpg_compat:infusion": "jade",
+      "minecraft:item_model": "mythic_rpg_compat:jade/archers/ruby_heavy_crossbow"
+    }
+  }
+}

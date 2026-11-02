@@ -1,0 +1,27 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "wizards",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "wizards:netherite_fire_robe_legs",
+  "addition": "betternether:nether_ruby",
+  "result": {
+    "id": "wizards:netherite_fire_robe_legs",
+    "components": {
+      "mythic_rpg_compat:forged": "ruby",
+      "minecraft:item_model": "mythic_rpg_compat:forged_ruby/wizards/netherite_fire_robe_legs",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/forged_ruby/wizards/netherite_fire_robe.png"
+        }
+      }
+    }
+  }
+}

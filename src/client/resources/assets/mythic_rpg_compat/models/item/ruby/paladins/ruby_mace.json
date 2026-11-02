@@ -1,0 +1,7 @@
+{
+  "parent": "paladins:item/base/mace",
+  "textures": {
+    "1": "mythic_rpg_compat:item/ruby/paladins/ruby_mace",
+    "particle": "mythic_rpg_compat:item/ruby/paladins/ruby_mace"
+  }
+}

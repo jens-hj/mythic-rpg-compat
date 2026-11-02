@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "rogues",
+        "mythicupgrades",
+        "betterend"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "rogues:aeternium_glaive",
+  "addition": "mythicupgrades:citrine_ingot",
+  "result": {
+    "id": "rogues:aeternium_glaive",
+    "components": {
+      "mythic_rpg_compat:infusion": "citrine",
+      "minecraft:item_model": "mythic_rpg_compat:citrine/rogues/aeternium_glaive"
+    }
+  }
+}

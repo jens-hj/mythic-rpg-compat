@@ -1,0 +1,6 @@
+{
+  "parent": "rogues:item/base/glaive_30",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/jade/rogues/aeternium_glaive"
+  }
+}

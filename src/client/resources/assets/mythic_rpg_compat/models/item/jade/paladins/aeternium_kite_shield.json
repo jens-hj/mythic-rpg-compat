@@ -1,0 +1,7 @@
+{
+  "parent": "paladins:item/base/metal_kite_shield_d_template",
+  "textures": {
+    "0": "mythic_rpg_compat:item/jade/paladins/aeternium_kite_shield",
+    "particle": "mythic_rpg_compat:item/jade/paladins/aeternium_kite_shield"
+  }
+}

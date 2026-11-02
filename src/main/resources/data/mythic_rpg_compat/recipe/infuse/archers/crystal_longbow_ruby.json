@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers",
+        "mythicupgrades",
+        "betterend"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:crystal_longbow",
+  "addition": "mythicupgrades:ruby_ingot",
+  "result": {
+    "id": "archers:crystal_longbow",
+    "components": {
+      "mythic_rpg_compat:infusion": "ruby",
+      "minecraft:item_model": "mythic_rpg_compat:ruby/archers/crystal_longbow"
+    }
+  }
+}

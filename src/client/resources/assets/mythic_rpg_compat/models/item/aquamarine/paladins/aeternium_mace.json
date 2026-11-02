@@ -1,0 +1,7 @@
+{
+  "parent": "paladins:item/base/mace",
+  "textures": {
+    "1": "mythic_rpg_compat:item/aquamarine/paladins/aeternium_mace",
+    "particle": "mythic_rpg_compat:item/aquamarine/paladins/aeternium_mace"
+  }
+}

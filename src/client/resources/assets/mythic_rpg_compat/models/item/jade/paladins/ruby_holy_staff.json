@@ -1,0 +1,6 @@
+{
+  "parent": "paladins:item/base/staff_24",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/jade/paladins/ruby_holy_staff"
+  }
+}

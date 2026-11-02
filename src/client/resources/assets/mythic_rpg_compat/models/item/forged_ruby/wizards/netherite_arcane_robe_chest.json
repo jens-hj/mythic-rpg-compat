@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/forged_ruby/wizards/netherite_arcane_robe_chest"
+  }
+}

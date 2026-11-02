@@ -1,0 +1,6 @@
+{
+  "parent": "rogues:item/base/double_axe_18",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/citrine/rogues/ruby_double_axe"
+  }
+}

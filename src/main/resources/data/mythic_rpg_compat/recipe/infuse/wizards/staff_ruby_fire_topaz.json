@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "wizards",
+        "mythicupgrades",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "wizards:staff_ruby_fire",
+  "addition": "mythicupgrades:topaz_ingot",
+  "result": {
+    "id": "wizards:staff_ruby_fire",
+    "components": {
+      "mythic_rpg_compat:infusion": "topaz",
+      "minecraft:item_model": "mythic_rpg_compat:topaz/wizards/staff_ruby_fire"
+    }
+  }
+}

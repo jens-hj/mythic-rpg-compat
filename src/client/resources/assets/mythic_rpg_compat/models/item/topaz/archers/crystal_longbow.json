@@ -1,0 +1,6 @@
+{
+  "parent": "archers:item/base/bow_20",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/topaz/archers/crystal_longbow"
+  }
+}

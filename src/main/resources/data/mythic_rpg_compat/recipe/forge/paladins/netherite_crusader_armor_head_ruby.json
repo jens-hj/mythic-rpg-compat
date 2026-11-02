@@ -1,0 +1,27 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "paladins",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "paladins:netherite_crusader_armor_head",
+  "addition": "betternether:nether_ruby",
+  "result": {
+    "id": "paladins:netherite_crusader_armor_head",
+    "components": {
+      "mythic_rpg_compat:forged": "ruby",
+      "minecraft:item_model": "mythic_rpg_compat:forged_ruby/paladins/netherite_crusader_armor_head",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/forged_ruby/paladins/netherite_crusader_armor.png"
+        }
+      }
+    }
+  }
+}

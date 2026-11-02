@@ -1,0 +1,6 @@
+{
+  "parent": "mythic_rpg_compat:item/citrine/archers/ruby_rapid_crossbow",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/citrine/archers/ruby_rapid_crossbow_pulling_0"
+  }
+}

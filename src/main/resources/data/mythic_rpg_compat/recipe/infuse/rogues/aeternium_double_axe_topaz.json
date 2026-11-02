@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "rogues",
+        "mythicupgrades",
+        "betterend"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "rogues:aeternium_double_axe",
+  "addition": "mythicupgrades:topaz_ingot",
+  "result": {
+    "id": "rogues:aeternium_double_axe",
+    "components": {
+      "mythic_rpg_compat:infusion": "topaz",
+      "minecraft:item_model": "mythic_rpg_compat:topaz/rogues/aeternium_double_axe"
+    }
+  }
+}

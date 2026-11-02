@@ -32,6 +32,14 @@ public final class GemRecolor {
 	}
 
 	public static NativeImage recolor(NativeImage source, @Nullable NativeImage twin, int[] palette) {
+		return recolor(source, twin, palette, false);
+	}
+
+	/**
+	 * @param diffOnly mask every pixel that differs from the twin, without the netherite-grey test
+	 *                 (for Ruby/Aeternium/Crystal textures, whose twin is the netherite version)
+	 */
+	public static NativeImage recolor(NativeImage source, @Nullable NativeImage twin, int[] palette, boolean diffOnly) {
 		int w = source.getWidth();
 		int h = source.getHeight();
 		boolean useTwin = twin != null && twin.getWidth() == w && twin.getHeight() == h;
@@ -44,8 +52,8 @@ public final class GemRecolor {
 				if (ARGB.alpha(c) == 0) {
 					continue;
 				}
-				boolean netherite = looksNetherite(c)
-						&& (!useTwin || distance(c, twin.getPixel(x, y)) > TWIN_THRESHOLD || ARGB.alpha(twin.getPixel(x, y)) == 0);
+				boolean differs = useTwin && (distance(c, twin.getPixel(x, y)) > TWIN_THRESHOLD || ARGB.alpha(twin.getPixel(x, y)) == 0);
+				boolean netherite = diffOnly ? differs : looksNetherite(c) && (!useTwin || differs);
 				if (netherite) {
 					mask[y * w + x] = true;
 					byLuminance.putIfAbsent(luminance(c), c & 0xFFFFFF);
@@ -93,16 +101,36 @@ public final class GemRecolor {
 		}
 	}
 
-	public static int[] gemPalette(ResourceManager manager, String gem) throws IOException {
-		return readPalette(manager, Identifier.fromNamespaceAndPath("mythicupgrades", "textures/" + gem + "_palette.png"));
-	}
+	/** Size of a Mythic palette strip; texture-derived palettes are resampled to the same length. */
+	private static final int PALETTE_SIZE = 10;
 
-	/** The gem's palette, or null when Mythic Upgrades (and so its palettes) isn't installed. */
-	public static int @Nullable [] gemPaletteOrNull(ResourceManager manager, String gem) {
-		try {
-			return gemPalette(manager, gem);
-		} catch (IOException e) {
-			return null;
+	/**
+	 * Builds a dark-to-light palette from a material texture (e.g. an ingot): its distinct opaque
+	 * colours sorted by luminance, resampled to {@link #PALETTE_SIZE} entries.
+	 */
+	public static int[] paletteFromTexture(ResourceManager manager, Identifier file) throws IOException {
+		try (NativeImage image = read(manager, file)) {
+			if (image == null) {
+				throw new IOException("Missing palette texture " + file);
+			}
+			TreeMap<Double, Integer> byLuminance = new TreeMap<>();
+			for (int y = 0; y < image.getHeight(); y++) {
+				for (int x = 0; x < image.getWidth(); x++) {
+					int c = image.getPixel(x, y);
+					if (ARGB.alpha(c) == 255) {
+						byLuminance.putIfAbsent(luminance(c), c);
+					}
+				}
+			}
+			Integer[] colors = byLuminance.values().toArray(Integer[]::new);
+			if (colors.length == 0) {
+				throw new IOException("Empty palette texture " + file);
+			}
+			int[] palette = new int[PALETTE_SIZE];
+			for (int i = 0; i < PALETTE_SIZE; i++) {
+				palette[i] = colors[(int) Math.round((double) i * (colors.length - 1) / (PALETTE_SIZE - 1))];
+			}
+			return palette;
 		}
 	}
 

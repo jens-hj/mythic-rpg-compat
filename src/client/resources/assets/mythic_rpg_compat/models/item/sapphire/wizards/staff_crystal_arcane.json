@@ -1,0 +1,6 @@
+{
+  "parent": "wizards:item/medium_staff",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/sapphire/wizards/staff_crystal_arcane"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers",
+        "mythicupgrades",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:ruby_rapid_crossbow",
+  "addition": "mythicupgrades:topaz_ingot",
+  "result": {
+    "id": "archers:ruby_rapid_crossbow",
+    "components": {
+      "mythic_rpg_compat:infusion": "topaz",
+      "minecraft:item_model": "mythic_rpg_compat:topaz/archers/ruby_rapid_crossbow"
+    }
+  }
+}

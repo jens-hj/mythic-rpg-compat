@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "rogues",
+        "mythicupgrades",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "rogues:ruby_sickle",
+  "addition": "mythicupgrades:aquamarine_ingot",
+  "result": {
+    "id": "rogues:ruby_sickle",
+    "components": {
+      "mythic_rpg_compat:infusion": "aquamarine",
+      "minecraft:item_model": "mythic_rpg_compat:aquamarine/rogues/ruby_sickle"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "mythic_rpg_compat:item/peridot/archers/ruby_rapid_crossbow",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/peridot/archers/ruby_rapid_crossbow_firework"
+  }
+}

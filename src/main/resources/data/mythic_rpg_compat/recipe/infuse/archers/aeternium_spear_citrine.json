@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers",
+        "mythicupgrades",
+        "betterend"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:aeternium_spear",
+  "addition": "mythicupgrades:citrine_ingot",
+  "result": {
+    "id": "archers:aeternium_spear",
+    "components": {
+      "mythic_rpg_compat:infusion": "citrine",
+      "minecraft:item_model": "mythic_rpg_compat:citrine/archers/aeternium_spear"
+    }
+  }
+}

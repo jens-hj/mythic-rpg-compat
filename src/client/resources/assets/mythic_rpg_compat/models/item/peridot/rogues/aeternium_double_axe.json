@@ -1,0 +1,6 @@
+{
+  "parent": "rogues:item/base/double_axe_20",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/peridot/rogues/aeternium_double_axe"
+  }
+}

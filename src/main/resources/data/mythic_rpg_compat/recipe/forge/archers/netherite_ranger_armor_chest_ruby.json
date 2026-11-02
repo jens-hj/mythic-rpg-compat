@@ -1,0 +1,27 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers",
+        "betternether"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "archers:netherite_ranger_armor_chest",
+  "addition": "betternether:nether_ruby",
+  "result": {
+    "id": "archers:netherite_ranger_armor_chest",
+    "components": {
+      "mythic_rpg_compat:forged": "ruby",
+      "minecraft:item_model": "mythic_rpg_compat:forged_ruby/archers/netherite_ranger_armor_chest",
+      "minecraft:custom_data": {
+        "armor_model_api": {
+          "texture": "mythic_rpg_compat:textures/armor/forged_ruby/archers/netherite_ranger_armor.png"
+        }
+      }
+    }
+  }
+}

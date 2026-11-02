@@ -1,46 +1,96 @@
 {
-  "gems": [
-    "ametrine",
-    "aquamarine",
-    "citrine",
-    "jade",
-    "peridot",
-    "ruby",
-    "sapphire",
-    "topaz"
+  "variants": [
+    {
+      "key": "ametrine",
+      "palette": "mythicupgrades:textures/ametrine_palette.png",
+      "strip": true
+    },
+    {
+      "key": "aquamarine",
+      "palette": "mythicupgrades:textures/aquamarine_palette.png",
+      "strip": true
+    },
+    {
+      "key": "citrine",
+      "palette": "mythicupgrades:textures/citrine_palette.png",
+      "strip": true
+    },
+    {
+      "key": "jade",
+      "palette": "mythicupgrades:textures/jade_palette.png",
+      "strip": true
+    },
+    {
+      "key": "peridot",
+      "palette": "mythicupgrades:textures/peridot_palette.png",
+      "strip": true
+    },
+    {
+      "key": "ruby",
+      "palette": "mythicupgrades:textures/ruby_palette.png",
+      "strip": true
+    },
+    {
+      "key": "sapphire",
+      "palette": "mythicupgrades:textures/sapphire_palette.png",
+      "strip": true
+    },
+    {
+      "key": "topaz",
+      "palette": "mythicupgrades:textures/topaz_palette.png",
+      "strip": true
+    },
+    {
+      "key": "forged_ruby",
+      "palette": "betternether:textures/item/nether_ruby.png",
+      "forge": true
+    },
+    {
+      "key": "forged_aeternium",
+      "palette": "betterend:textures/item/aeternium_ingot.png",
+      "forge": true
+    }
   ],
   "textures": [
     {
       "texture": "archers:armor/netherite_ranger_armor",
-      "twin": "archers:armor/ranger_armor"
+      "twin": "archers:armor/ranger_armor",
+      "forge": true
     },
     {
       "texture": "paladins:armor/netherite_crusader_armor",
-      "twin": "paladins:armor/crusader_armor"
+      "twin": "paladins:armor/crusader_armor",
+      "forge": true
     },
     {
       "texture": "paladins:armor/netherite_prior_robe",
-      "twin": "paladins:armor/prior_robe"
+      "twin": "paladins:armor/prior_robe",
+      "forge": true
     },
     {
       "texture": "rogues:armor/netherite_assassin_armor",
-      "twin": "rogues:armor/assassin_armor"
+      "twin": "rogues:armor/assassin_armor",
+      "forge": true
     },
     {
       "texture": "rogues:armor/netherite_berserker_armor",
-      "twin": "rogues:armor/berserker_armor"
+      "twin": "rogues:armor/berserker_armor",
+      "forge": true
     },
     {
       "texture": "wizards:armor/netherite_arcane_robe",
-      "twin": "wizards:armor/arcane_robe"
+      "twin": "wizards:armor/arcane_robe",
+      "forge": true
     },
     {
       "texture": "wizards:armor/netherite_fire_robe",
-      "twin": "wizards:armor/fire_robe"
+      "twin": "wizards:armor/fire_robe",
+      "forge": true
     },
     {
       "texture": "wizards:armor/netherite_frost_robe",
-      "twin": "wizards:armor/frost_robe"
+      "twin": "wizards:armor/frost_robe",
+      "forge": true
     }
   ]
 }

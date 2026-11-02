@@ -18,23 +18,23 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Atlas sprite source {@code mythic_rpg_compat:gem_recolor}: adds a gem-recoloured copy of each
- * listed texture for each gem, read from whatever mods are installed.
+ * Atlas sprite source {@code mythic_rpg_compat:gem_recolor}: adds a recoloured copy of each listed
+ * texture for each variant (gems, forge tiers), read from whatever mods are installed.
  */
-public record GemRecolorSource(List<String> gems, List<RecolorEntry> textures) implements SpriteSource {
+public record GemRecolorSource(List<RecolorVariant> variants, List<RecolorEntry> textures) implements SpriteSource {
 	public static final Identifier TYPE = MythicRpgCompat.id("gem_recolor");
 	public static final MapCodec<GemRecolorSource> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-			Codec.STRING.listOf().fieldOf("gems").forGetter(GemRecolorSource::gems),
+			RecolorVariant.CODEC.listOf().fieldOf("variants").forGetter(GemRecolorSource::variants),
 			RecolorEntry.CODEC.listOf().fieldOf("textures").forGetter(GemRecolorSource::textures)
 	).apply(i, GemRecolorSource::new));
 
 	@Override
 	public void run(ResourceManager manager, Output output) {
-		Map<String, int[]> palettes = new HashMap<>();
-		for (String gem : gems) {
-			int[] palette = GemRecolor.gemPaletteOrNull(manager, gem);
+		Map<RecolorVariant, int[]> palettes = new HashMap<>();
+		for (RecolorVariant variant : variants) {
+			int[] palette = variant.loadPalette(manager);
 			if (palette != null) {
-				palettes.put(gem, palette); // missing when Mythic Upgrades isn't installed
+				palettes.put(variant, palette); // missing when the variant's mod isn't installed
 			}
 		}
 		if (palettes.isEmpty()) {
@@ -47,9 +47,12 @@ public record GemRecolorSource(List<String> gems, List<RecolorEntry> textures) i
 				if (source == null) {
 					continue; // mod not installed
 				}
-				for (String gem : palettes.keySet()) {
-					Identifier id = entry.recolored(gem);
-					NativeImage image = GemRecolor.recolor(source, twin, palettes.get(gem));
+				for (var variant : palettes.entrySet()) {
+					if (!entry.accepts(variant.getKey())) {
+						continue;
+					}
+					Identifier id = entry.recolored(variant.getKey().key());
+					NativeImage image = GemRecolor.recolor(source, twin, variant.getValue(), entry.diffMode());
 					output.add(id, new Loader(id, image));
 				}
 			} catch (IOException e) {

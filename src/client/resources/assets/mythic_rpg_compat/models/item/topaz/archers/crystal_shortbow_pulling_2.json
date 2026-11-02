@@ -1,0 +1,6 @@
+{
+  "parent": "mythic_rpg_compat:item/topaz/archers/crystal_shortbow",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/topaz/archers/crystal_shortbow_pulling_2"
+  }
+}

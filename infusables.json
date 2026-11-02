@@ -1,26 +1,194 @@
 {
-  "_comment": "Netherite RPG Series gear that can be infused. Run scripts/gen_data.py after editing.",
-  "gems": ["ametrine", "aquamarine", "citrine", "jade", "peridot", "ruby", "sapphire", "topaz"],
+  "_comment": "RPG Series gear that can be upgraded. Run scripts/gen_data.py after editing.",
+  "gems": [
+    "ametrine",
+    "aquamarine",
+    "citrine",
+    "jade",
+    "peridot",
+    "ruby",
+    "sapphire",
+    "topaz"
+  ],
+  "forges": {
+    "ruby": {
+      "requires": "betternether",
+      "template": "minecraft:netherite_upgrade_smithing_template",
+      "addition": "betternether:nether_ruby",
+      "palette": "betternether:item/nether_ruby"
+    },
+    "aeternium": {
+      "requires": "betterend",
+      "template": "betterend:plate_upgrade_smithing_template",
+      "addition": "betterend:aeternium_forged_plate",
+      "palette": "betterend:item/aeternium_ingot"
+    }
+  },
   "mods": {
     "archers": {
       "modrinth": "archers",
-      "armor": ["netherite_ranger_armor"],
-      "weapons": ["netherite_longbow", "netherite_shortbow", "netherite_heavy_crossbow", "netherite_rapid_crossbow", "netherite_spear"]
+      "armor": [
+        "netherite_ranger_armor"
+      ],
+      "weapons": [
+        "netherite_longbow",
+        "netherite_shortbow",
+        "netherite_heavy_crossbow",
+        "netherite_rapid_crossbow",
+        "netherite_spear"
+      ],
+      "bonus_weapons": [
+        {
+          "id": "aeternium_spear",
+          "requires": "betterend"
+        },
+        {
+          "id": "crystal_longbow",
+          "requires": "betterend"
+        },
+        {
+          "id": "crystal_shortbow",
+          "requires": "betterend"
+        },
+        {
+          "id": "ruby_heavy_crossbow",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_rapid_crossbow",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_spear",
+          "requires": "betternether"
+        }
+      ]
     },
     "paladins": {
       "modrinth": "paladins-and-priests",
-      "armor": ["netherite_crusader_armor", "netherite_prior_robe"],
-      "weapons": ["netherite_claymore", "netherite_great_hammer", "netherite_mace", "netherite_holy_staff", "netherite_holy_wand", "netherite_kite_shield"]
+      "armor": [
+        "netherite_crusader_armor",
+        "netherite_prior_robe"
+      ],
+      "weapons": [
+        "netherite_claymore",
+        "netherite_great_hammer",
+        "netherite_mace",
+        "netherite_holy_staff",
+        "netherite_holy_wand",
+        "netherite_kite_shield"
+      ],
+      "bonus_weapons": [
+        {
+          "id": "aeternium_claymore",
+          "requires": "betterend"
+        },
+        {
+          "id": "aeternium_great_hammer",
+          "requires": "betterend"
+        },
+        {
+          "id": "aeternium_kite_shield",
+          "requires": "betterend"
+        },
+        {
+          "id": "aeternium_mace",
+          "requires": "betterend"
+        },
+        {
+          "id": "ruby_claymore",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_great_hammer",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_holy_staff",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_kite_shield",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_mace",
+          "requires": "betternether"
+        }
+      ]
     },
     "wizards": {
       "modrinth": "wizards",
-      "armor": ["netherite_arcane_robe", "netherite_fire_robe", "netherite_frost_robe"],
-      "weapons": ["staff_netherite_arcane", "staff_netherite_fire", "staff_netherite_frost", "wand_netherite_arcane", "wand_netherite_fire", "wand_netherite_frost"]
+      "armor": [
+        "netherite_arcane_robe",
+        "netherite_fire_robe",
+        "netherite_frost_robe"
+      ],
+      "weapons": [
+        "staff_netherite_arcane",
+        "staff_netherite_fire",
+        "staff_netherite_frost",
+        "wand_netherite_arcane",
+        "wand_netherite_fire",
+        "wand_netherite_frost"
+      ],
+      "bonus_weapons": [
+        {
+          "id": "staff_crystal_arcane",
+          "requires": "betterend"
+        },
+        {
+          "id": "staff_ruby_fire",
+          "requires": "betternether"
+        }
+      ]
     },
     "rogues": {
       "modrinth": "rogues-and-warriors",
-      "armor": ["netherite_assassin_armor", "netherite_berserker_armor"],
-      "weapons": ["netherite_dagger", "netherite_double_axe", "netherite_glaive", "netherite_sickle"]
+      "armor": [
+        "netherite_assassin_armor",
+        "netherite_berserker_armor"
+      ],
+      "weapons": [
+        "netherite_dagger",
+        "netherite_double_axe",
+        "netherite_glaive",
+        "netherite_sickle"
+      ],
+      "bonus_weapons": [
+        {
+          "id": "aeternium_dagger",
+          "requires": "betterend"
+        },
+        {
+          "id": "aeternium_double_axe",
+          "requires": "betterend"
+        },
+        {
+          "id": "aeternium_glaive",
+          "requires": "betterend"
+        },
+        {
+          "id": "aeternium_sickle",
+          "requires": "betterend"
+        },
+        {
+          "id": "ruby_dagger",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_double_axe",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_glaive",
+          "requires": "betternether"
+        },
+        {
+          "id": "ruby_sickle",
+          "requires": "betternether"
+        }
+      ]
     }
   }
 }

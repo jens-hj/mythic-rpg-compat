@@ -1,0 +1,6 @@
+{
+  "parent": "archers:item/base/crossbow_18",
+  "textures": {
+    "layer0": "mythic_rpg_compat:item/peridot/archers/ruby_heavy_crossbow_standby"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "archers",
+        "mythicupgrades",
+        "betterend"
+      ]
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "template": "mythicupgrades:mythic_upgrade_smithing_template",
+  "base": "archers:crystal_shortbow",
+  "addition": "mythicupgrades:ametrine_ingot",
+  "result": {
+    "id": "archers:crystal_shortbow",
+    "components": {
+      "mythic_rpg_compat:infusion": "ametrine",
+      "minecraft:item_model": "mythic_rpg_compat:ametrine/archers/crystal_shortbow"
+    }
+  }
+}
