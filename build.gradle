@@ -51,6 +51,10 @@ dependencies {
 	localRuntime "maven.modrinth:cloth-config:${project.cloth_config_version}"
 	localRuntime "maven.modrinth:armor-model-api:${project.armor_model_api_version}"
 
+	// Optional: Jewelry gem sockets (extra socket on first infusion)
+	compileOnly "maven.modrinth:jewelry:${project.jewelry_version}"
+	localRuntime "maven.modrinth:jewelry:${project.jewelry_version}"
+
 	// RPG Series: only referenced by id, present in the dev client for testing
 	localRuntime "maven.modrinth:archers:${project.archers_version}"
 	localRuntime "maven.modrinth:paladins-and-priests:${project.paladins_version}"
