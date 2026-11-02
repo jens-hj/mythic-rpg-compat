@@ -8,7 +8,10 @@ Every integration is **optional**: install whichever of these mods you play with
 
 Smithing Table: **Mythic Upgrade Smithing Template** + **RPG item** + **Mythic gem ingot** (Ametrine, Aquamarine, Citrine, Jade, Peridot, Ruby, Sapphire or Topaz).
 
-- **Gem effects.** Infused **armor** counts as that gem's Mythic armor for set effects, including partial sets and sets mixed with real Mythic pieces. Infused **weapons** trigger the gem's on-hit effect, like a Mythic sword.
+- **Gem effects.** Infused **armor** counts as that gem's Mythic armor for set effects, including partial sets and sets mixed with real Mythic pieces. Infused **weapons** trigger the gem's on-hit effect, like a Mythic sword:
+  - **Melee** hits, as with Mythic's own weapons.
+  - **Arrows and bolts** from infused bows and crossbows, when fully drawn (crossbow bolts always count).
+  - **Spells** cast with an infused staff or weapon, on the spell's direct target (not splash or area victims), at most once per target per second.
 - **Stats.** Armor gets **+25% on its own class attributes** (Ranged Damage, Spell Power, Draw Speed, …) and **+1 Armor Toughness**.
 - **Extra socket.** With [Jewelry](https://modrinth.com/mod/jewelry), infused gear accepts **one more Socket Mount**.
 - Works on all Netherite RPG armor and weapons, *and* on the RPG Series' own **Ruby, Aeternium and Crystal weapons**.
@@ -54,6 +57,5 @@ Install on **both the server and the client**.
 
 ## Good to know
 
-- Mythic Upgrades only triggers weapon gem effects on **direct melee hits**, so arrows from infused bows and crossbows (and most spells) don't trigger them. Your bows still get the colours and the infusion.
 - The recoloured textures are generated on your machine from the mods you have installed. No RPG Series artwork is included in this mod, so it also works with resource packs that retexture the RPG gear.
 - Formerly *Mythic RPG Compat*. Gear upgraded with older versions keeps working.

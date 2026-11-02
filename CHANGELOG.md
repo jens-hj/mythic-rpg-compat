@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+- Arrows and bolts from infused bows and crossbows trigger the gem's on-hit effect (fully drawn bows; crossbow bolts always).
+- Spells trigger the gem's on-hit effect only on their direct target, at most once per target per second (splash, area and beam ticks no longer proc).
+
 ## 0.4.1
 - Forged and infused armor gets a two-tone look: the forge's colours on the dark shades, the gem's on the light ones.
 

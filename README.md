@@ -46,8 +46,11 @@ Rogues & Warriors, plus their Ruby/Aeternium/Crystal weapons. See [`infusables.j
 
 ## Limitations
 
-- Mythic Upgrades only triggers weapon effects on direct melee hits. Arrows from infused bows
-  and crossbows, and most spells, don't trigger gem effects.
+- Infused weapons trigger their gem's on-hit effect on melee hits, and also:
+  - **Arrows and bolts** from an infused bow or crossbow, when fully drawn (crossbow bolts always
+    count). The gem comes from the weapon that fired the arrow.
+  - **Spells**, on the spell's direct target only (not splash or area victims), at most once per
+    target per second. The gem comes from the main-hand item.
 
 ## How it works
 
