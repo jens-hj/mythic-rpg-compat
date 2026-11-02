@@ -4,7 +4,7 @@ plugins {
 }
 
 base {
-	archivesName = 'mythic-rpg-compat'
+	archivesName = 'rpg-gear-upgrades'
 }
 
 repositories {
@@ -135,7 +135,7 @@ modrinth {
 	token = modrinthToken
 	// ./gradlew modrinth -PmodrinthDryRun prints the upload instead of sending it
 	debugMode = providers.gradleProperty("modrinthDryRun").isPresent()
-	projectId = "mythic-rpg-compat"
+	projectId = "rpg-gear-upgrades"
 	versionNumber = project.version
 	versionName = "${project.version}"
 	versionType = "release"
