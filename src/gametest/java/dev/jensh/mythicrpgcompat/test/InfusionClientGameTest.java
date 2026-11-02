@@ -71,15 +71,32 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			});
 
-			// Stats: infused piece keeps the RPG piece's stats and adds Mythic's (currently identical to Netherite's).
+			// Stats: +1 toughness, class attributes x1.25, vanilla armor unchanged.
 			equip(sp, (server, i) -> i == 1 ? rpg("archers", "netherite_ranger_armor_chest") : ItemStack.EMPTY);
 			context.waitTicks(5);
 			double[] plain = sp.getServer().computeOnServer(server -> stats(player(server)));
 			equip(sp, (server, i) -> i == 1 ? infuse(server, "archers", "netherite_ranger_armor_chest", Gem.RUBY, null) : ItemStack.EMPTY);
 			context.waitTicks(5);
 			double[] infused = sp.getServer().computeOnServer(server -> stats(player(server)));
-			log("armor/toughness/ranged plain=%s infused=%s", java.util.Arrays.toString(plain), java.util.Arrays.toString(infused));
-			check(plain[0] > 0 && infused[0] >= plain[0] && infused[1] >= plain[1] && infused[2] == plain[2], "infused chest keeps RPG stats");
+			log("armor/toughness plain=%s infused=%s", java.util.Arrays.toString(plain), java.util.Arrays.toString(infused));
+			check(infused[0] == plain[0] && infused[1] == plain[1] + 1, "infused chest: same armor, +1 toughness");
+			sp.getServer().runOnServer(server -> {
+				Map<String, Double> plainMods = modifierSums(rpg("archers", "netherite_ranger_armor_chest"));
+				Map<String, Double> infusedMods = modifierSums(infuse(server, "archers", "netherite_ranger_armor_chest", Gem.RUBY, null));
+				log("chest modifiers plain=%s infused=%s", plainMods, infusedMods);
+				String ranged = "ranged_weapon:damage";
+				check(plainMods.containsKey(ranged) && Math.abs(infusedMods.get(ranged) - plainMods.get(ranged) * 1.25) < 1e-6, "ranged damage x1.25");
+			});
+
+			// Jewelry: first infusion adds one socket, re-gemming doesn't.
+			sp.getServer().runOnServer(server -> {
+				ItemStack plainChest = rpg("archers", "netherite_ranger_armor_chest");
+				ItemStack first = infuse(server, "archers", "netherite_ranger_armor_chest", Gem.RUBY, null);
+				ItemStack regem = infuse(server, "archers", "netherite_ranger_armor_chest", Gem.TOPAZ, first);
+				int p0 = sockets(plainChest), p1 = sockets(first), p2 = sockets(regem);
+				log("sockets plain=%d infused=%d regem=%d", p0, p1, p2);
+				check(p1 == p0 + 1 && p2 == p1, "one extra socket on first infusion only");
+			});
 
 			// Armor set effects: infused ranger set == real Mythic set of the same gem.
 			for (Gem gem : new Gem[]{Gem.RUBY, Gem.SAPPHIRE, Gem.JADE, Gem.TOPAZ}) {
@@ -193,11 +210,18 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 	}
 
 	private static double[] stats(ServerPlayer player) {
-		return new double[]{
-				player.getAttributeValue(Attributes.ARMOR),
-				player.getAttributeValue(Attributes.ARMOR_TOUGHNESS),
-				player.getAttributeValue(BuiltInRegistries.ATTRIBUTE.get(Identifier.parse("ranged_weapon:damage")).orElseThrow())
-		};
+		return new double[]{player.getAttributeValue(Attributes.ARMOR), player.getAttributeValue(Attributes.ARMOR_TOUGHNESS)};
+	}
+
+	private static Map<String, Double> modifierSums(ItemStack stack) {
+		Map<String, Double> sums = new TreeMap<>();
+		stack.forEachModifier(EquipmentSlot.CHEST, (attribute, modifier) -> sums.merge(attribute.getRegisteredName(), modifier.amount(), Double::sum));
+		return sums;
+	}
+
+	private static int sockets(ItemStack stack) {
+		var sockets = stack.get(net.jewelry.gems.GemComponents.SOCKETS);
+		return sockets == null ? 0 : sockets.count();
 	}
 
 	private static Map<String, Integer> wearAndRecord(ClientGameTestContext context, TestSingleplayerContext sp, Piece piece) {

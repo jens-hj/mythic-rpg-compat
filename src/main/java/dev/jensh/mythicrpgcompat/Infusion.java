@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -50,7 +51,16 @@ public final class Infusion {
 		return surrogate == net.minecraft.world.item.Items.AIR ? original : surrogate;
 	}
 
-	/** Extra modifiers an infused armor piece grants: Mythic material stats on top of Netherite's. */
+	/** How much infusion boosts an armor piece's own class attributes (ranged damage, spell power, ...). */
+	public static final double CLASS_STAT_BOOST = 0.25;
+	/** Flat armor toughness every infused armor piece gains. */
+	public static final double BONUS_TOUGHNESS = 1.0;
+
+	/**
+	 * Extra modifiers an infused armor piece grants: its own class attributes boosted by
+	 * {@link #CLASS_STAT_BOOST}, Mythic's material stats on top of Netherite's, and
+	 * {@link #BONUS_TOUGHNESS}.
+	 */
 	public static void forEachBonus(ItemStack stack, EquipmentSlot querySlot, BiConsumer<Holder<Attribute>, AttributeModifier> consumer) {
 		Gem gem = gem(stack);
 		EquipmentSlot slot = armorSlot(stack);
@@ -68,7 +78,7 @@ public final class Infusion {
 		var id = MythicRpgCompat.id("infusion_" + slot.getName());
 
 		double armor = mythic.defense().getOrDefault(type, 0) - netherite.defense().getOrDefault(type, 0);
-		double toughness = mythic.toughness() - netherite.toughness();
+		double toughness = mythic.toughness() - netherite.toughness() + BONUS_TOUGHNESS;
 		double knockback = mythic.knockbackResistance() - netherite.knockbackResistance();
 		if (armor != 0) {
 			consumer.accept(Attributes.ARMOR, new AttributeModifier(id, armor, AttributeModifier.Operation.ADD_VALUE));
@@ -78,6 +88,25 @@ public final class Infusion {
 		}
 		if (knockback != 0) {
 			consumer.accept(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, knockback, AttributeModifier.Operation.ADD_VALUE));
+		}
+
+		EquipmentSlotGroup group = EquipmentSlotGroup.bySlot(slot);
+		for (ItemAttributeModifiers.Entry entry : stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).modifiers()) {
+			if (!entry.slot().equals(group) || BASE_ARMOR_STATS.contains(entry.attribute())) {
+				continue;
+			}
+			AttributeModifier own = entry.modifier();
+			consumer.accept(entry.attribute(), new AttributeModifier(id, own.amount() * CLASS_STAT_BOOST, own.operation()));
+		}
+	}
+
+	private static final java.util.Set<Holder<Attribute>> BASE_ARMOR_STATS =
+			java.util.Set.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS, Attributes.KNOCKBACK_RESISTANCE);
+
+	/** Runs once when a piece is infused for the first time (not when swapping gems). */
+	public static void onFirstInfusion(ItemStack stack) {
+		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("jewelry")) {
+			JewelryCompat.addSocket(stack);
 		}
 	}
 
