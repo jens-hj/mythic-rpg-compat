@@ -11,5 +11,21 @@
   "tooltip.mythic_rpg_compat.extra_socket_mount": "Accepts an extra Socket Mount",
   "tooltip.mythic_rpg_compat.forged": "Forged: %s",
   "forge.mythic_rpg_compat.ruby": "Ruby",
-  "forge.mythic_rpg_compat.aeternium": "Aeternium"
+  "forge.mythic_rpg_compat.aeternium": "Aeternium",
+  "config.mythic_rpg_compat.title": "RPG Gear Upgrades",
+  "config.mythic_rpg_compat.particles": "Mythic Particles",
+  "config.mythic_rpg_compat.particles.description": "How many particles Mythic Upgrades gem effects spawn. 100% is Mythic's default, 0% hides them. Particles come from the server: in singleplayer this applies right away, on a multiplayer server the server's config/rpg_gear_upgrades.json is used.",
+  "config.mythic_rpg_compat.particles.use_override": "Same amount for all gems",
+  "config.mythic_rpg_compat.particles.use_override.tooltip": "Use the amount below for every gem instead of the per-gem amounts",
+  "config.mythic_rpg_compat.particles.override": "All gems",
+  "config.mythic_rpg_compat.particles.override.tooltip": "Particle amount for every gem, when \"Same amount for all gems\" is on",
+  "config.mythic_rpg_compat.particles.gem.tooltip": "Particle amount for %s effects",
+  "config.mythic_rpg_compat.particles.gem.ametrine": "Ametrine",
+  "config.mythic_rpg_compat.particles.gem.aquamarine": "Aquamarine",
+  "config.mythic_rpg_compat.particles.gem.citrine": "Citrine",
+  "config.mythic_rpg_compat.particles.gem.jade": "Jade",
+  "config.mythic_rpg_compat.particles.gem.peridot": "Peridot",
+  "config.mythic_rpg_compat.particles.gem.ruby": "Ruby",
+  "config.mythic_rpg_compat.particles.gem.topaz": "Topaz",
+  "config.mythic_rpg_compat.particles.gem.necoium": "Necoium (damage sharing)"
 }

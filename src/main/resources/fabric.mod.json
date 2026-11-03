@@ -13,7 +13,8 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": ["dev.jensh.mythicrpgcompat.MythicRpgCompat"],
-		"client": ["dev.jensh.mythicrpgcompat.client.MythicRpgCompatClient"]
+		"client": ["dev.jensh.mythicrpgcompat.client.MythicRpgCompatClient"],
+		"modmenu": ["dev.jensh.mythicrpgcompat.client.config.ModMenuIntegration"]
 	},
 	"mixins": [
 		"mythic_rpg_compat.mixins.json",
@@ -38,5 +39,9 @@
 		"wizards": "*",
 		"rogues": "*",
 		"jewelry": "*"
+	},
+	"suggests": {
+		"modmenu": "*",
+		"cloth-config": "*"
 	}
 }

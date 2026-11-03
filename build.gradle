@@ -52,6 +52,11 @@ dependencies {
 	}
 	compileOnly "maven.modrinth:armor-model-api:${project.armor_model_api_version}"
 	localRuntime "maven.modrinth:cloth-config:${project.cloth_config_version}"
+
+	// Optional: config screen in Mod Menu, built with Cloth Config
+	compileOnly "maven.modrinth:cloth-config:${project.cloth_config_version}"
+	compileOnly "maven.modrinth:modmenu:${project.modmenu_version}"
+	localRuntime "maven.modrinth:modmenu:${project.modmenu_version}"
 	localRuntime "maven.modrinth:armor-model-api:${project.armor_model_api_version}"
 
 	// Optional: Jewelry gem sockets (extra socket on first infusion)
