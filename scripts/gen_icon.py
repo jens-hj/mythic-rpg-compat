@@ -71,3 +71,20 @@ prev.alpha_composite(icon, (10, 10))
 light = Image.new("RGBA", (N, N), (200, 200, 200, 255)); light.alpha_composite(icon)
 prev.alpha_composite(light, (N + 20, 10))
 prev.resize((prev.size[0] * 3, prev.size[1] * 3), Image.NEAREST).save(sys.argv[2])
+
+# Optional: the Modrinth project icon, the same sprite on a dark rounded tile
+if len(sys.argv) > 3:
+    T = 512
+    tile = Image.new("RGBA", (T, T), (0, 0, 0, 0))
+    bg = Image.new("RGBA", (T, T), (0, 0, 0, 0))
+    ImageDraw.Draw(bg).rounded_rectangle((0, 0, T - 1, T - 1), radius=100, fill=(26, 22, 32, 255))
+    glow = Image.new("RGBA", (T, T), (0, 0, 0, 0))
+    ImageDraw.Draw(glow).ellipse((96, 96, T - 96, T - 96), fill=(190, 90, 255, 150))
+    tile.alpha_composite(bg)
+    tile.alpha_composite(Image.composite(glow.filter(ImageFilter.GaussianBlur(80)), Image.new("RGBA", (T, T)), bg.split()[3]))
+    big = spr.resize((16 * 22, 16 * 22), Image.NEAREST)
+    x0 = (T - big.size[0]) // 2; y0 = (T - big.size[1]) // 2 + 6
+    shadow = Image.new("RGBA", big.size, (0, 0, 0, 0)); shadow.putalpha(big.split()[3].point(lambda v: 150 if v else 0))
+    tile.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(10)), (x0 + 6, y0 + 14))
+    tile.alpha_composite(big, (x0, y0))
+    tile.save(sys.argv[3])
