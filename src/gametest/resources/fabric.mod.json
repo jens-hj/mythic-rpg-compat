@@ -7,6 +7,7 @@
 	"entrypoints": {
 		"fabric-client-gametest": [
 			"dev.jensh.mythicrpgcompat.test.InfusionClientGameTest",
+			"dev.jensh.mythicrpgcompat.test.ConfigScreenClientGameTest",
 			"dev.jensh.mythicrpgcompat.test.GalleryClientGameTest"
 		]
 	},
