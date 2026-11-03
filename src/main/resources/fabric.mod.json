@@ -10,6 +10,7 @@
 		"issues": "https://github.com/jens-hj/mythic-rpg-compat/issues"
 	},
 	"license": "MIT",
+	"icon": "assets/mythic_rpg_compat/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": ["dev.jensh.mythicrpgcompat.MythicRpgCompat"],
