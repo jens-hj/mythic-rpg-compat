@@ -1,86 +1,73 @@
-"""Generates the mod icon: python3 scripts/gen_icon.py src/main/resources/assets/mythic_rpg_compat/icon.png preview.png (needs Pillow)."""
+"""Draws the mod icon (original art, Ametrine colours): python3 scripts/gen_icon.py <icon.png> <preview.png>. Needs Pillow."""
 import sys
-from PIL import Image
-# Left half (16 cols) of a 32x32 chestplate, mirrored. O outline, t trim, b body, '.' empty.
+from PIL import Image, ImageDraw, ImageFilter
+# Gem palette, dark -> light (Ametrine)
+PAL = [(21,11,47),(45,17,76),(69,21,113),(100,31,154),(127,33,177),(164,49,194),(208,64,193),(239,109,171),(249,160,139),(253,203,179)]
+GOLD = {"a": (140, 82, 20), "b": (214, 150, 30), "c": (252, 214, 70), "d": (255, 244, 170)}
+# 16x16 silhouette: '#' body, 'g' gold trim, '.' empty. Left 8 columns, mirrored.
 HALF = [
-"................",
-"................",
-"................",
-"....OOOOOO......",
-"...OttttttO.....",
-"..OtttttttO.....",
-".OttbbbbbttOOOOO",
-".Otbbbbbbbtttttt",
-".Otbbbbbbbbbbbbb",
-".Otbbbbbbbbbbbbb",
-".OOObbbbbbbbbbbb",
-"...Obbbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Obbbbbbbbbbb",
-"....Otttttttttbb",
-"....Ottttttttttt",
-"....OOOOOOOOOOOO",
-"................",
+"........",
+".ggg....",
+"gggg#...",
+"ggg##g..",
+"#g###g..",
+"######gg",
+"########",
+".#######",
+"..######",
+"..######",
+"..######",
+"..######",
+"..######",
+"..gggggg",
+"..gggggg",
+"........",
 ]
-ROWS = [r + r[::-1] for r in HALF]
-OUT = (24, 18, 22)
-BODY = [(78, 70, 74), (66, 59, 63), (55, 49, 53), (45, 40, 44)]       # netherite-ish, light -> dark
-RUBY = [(255, 120, 120), (220, 52, 62), (160, 24, 40), (105, 12, 28)]
-AETER = [(150, 255, 230), (60, 210, 190), (30, 145, 140), (18, 90, 95)]
-GEM = {"h": (255, 245, 255), "l": (235, 150, 255), "m": (180, 80, 230), "d": (110, 40, 170), "e": (60, 18, 100)}
-# Cut gem, centred on the chest
-GEM_ROWS = [
-"...ee...",
-"..ehle..",
-".ehllme.",
-"elllmmde",
-"emmmmdde",
-".edmdde.",
-"..edde..",
-"...ee...",
-]
-W, H = 32, len(ROWS)
-img = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
-top = (32 - H) // 2 + 1
-for y, row in enumerate(ROWS):
-    for x, c in enumerate(row):
+rows = [h + h[::-1] for h in HALF]
+H, W = len(rows), 16
+def filled(x, y):
+    return 0 <= x < W and 0 <= y < H and rows[y][x] != "."
+spr = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+for y in range(H):
+    for x in range(W):
+        c = rows[y][x]
         if c == ".":
             continue
-        if c == "O":
-            col = OUT
-        elif c == "t":
-            pal = RUBY if x < 16 else AETER
-            # light from the top-left
-            shade = 0 if y < 6 else 1 if y < 12 else 2
-            if x in (15, 16):
-                shade = min(3, shade + 1)
-            col = pal[shade]
+        edge_tl = not filled(x - 1, y) or not filled(x, y - 1)
+        edge_br = not filled(x + 1, y) or not filled(x, y + 1)
+        if c == "g":
+            col = GOLD["a"] if edge_br else GOLD["d"] if edge_tl and x < 8 else GOLD["c"] if x < 8 else GOLD["b"]
         else:
-            # body: lighter near top-left, darker towards bottom-right, a centre seam
-            v = (x * 0.6 + y) / (32 * 0.6 + H)
-            shade = min(3, int(v * 4.2))
-            if x in (15, 16):
-                shade = min(3, shade + 1)
-            col = BODY[shade]
-            if row[x - 1] == "O" and x < 16:
-                col = BODY[0] if y < 18 else BODY[1]
-        img.putpixel((x, y + top), col + (255,))
-gx, gy = 12, 12 + top
-for y, row in enumerate(GEM_ROWS):
-    for x, c in enumerate(row):
-        if c != ".":
-            img.putpixel((gx + x, gy + y), GEM[c] + (255,))
-box = img.getbbox()
-centred = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
-centred.paste(img.crop(box), ((32 - (box[2] - box[0])) // 2, (32 - (box[3] - box[1])) // 2))
-img = centred
-img.resize((128, 128), Image.NEAREST).save(sys.argv[1])
-img.resize((512, 512), Image.NEAREST).save(sys.argv[2])
+            # light from the top-left
+            s = 8.3 - 0.33 * x - 0.30 * y
+            if x in (7, 8):          # centre seam
+                s -= 1.2
+            if edge_br:
+                s = 1 if y > 4 or x > 8 else 2
+            elif edge_tl:
+                s = min(s + 1.5, 7)
+            col = PAL[max(1, min(9, round(s)))]
+        spr.putpixel((x, y), col + (255,))
+# Gem set in the chest, in a gold setting
+for (x, y) in [(6, 7), (9, 7), (5, 8), (10, 8), (5, 9), (10, 9), (6, 10), (9, 10), (7, 11), (8, 11)]:
+    spr.putpixel((x, y), (GOLD["c"] if x < 8 and y < 10 else GOLD["a"]) + (255,))
+for (x, y), c in {(7, 7): 9, (8, 7): 8, (6, 8): 9, (7, 8): 8, (8, 8): 7, (9, 8): 6,
+                  (6, 9): 7, (7, 9): 6, (8, 9): 5, (9, 9): 4, (7, 10): 4, (8, 10): 3}.items():
+    spr.putpixel((x, y), PAL[c] + (255,))
+
+N, scale = 128, 7
+icon = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+glow = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+ImageDraw.Draw(glow).ellipse((22, 22, N - 22, N - 22), fill=(190, 90, 255, 110))
+icon.alpha_composite(glow.filter(ImageFilter.GaussianBlur(16)))
+big = spr.resize((16 * scale, 16 * scale), Image.NEAREST)
+x0 = (N - big.size[0]) // 2; y0 = (N - big.size[1]) // 2
+shadow = Image.new("RGBA", big.size, (8, 4, 16, 0)); shadow.putalpha(big.split()[3].point(lambda v: 140 if v else 0))
+icon.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(3)), (x0 + 2, y0 + 4))
+icon.alpha_composite(big, (x0, y0))
+icon.save(sys.argv[1])
+prev = Image.new("RGBA", (N * 2 + 30, N + 20), (30, 30, 30, 255))
+prev.alpha_composite(icon, (10, 10))
+light = Image.new("RGBA", (N, N), (200, 200, 200, 255)); light.alpha_composite(icon)
+prev.alpha_composite(light, (N + 20, 10))
+prev.resize((prev.size[0] * 3, prev.size[1] * 3), Image.NEAREST).save(sys.argv[2])
