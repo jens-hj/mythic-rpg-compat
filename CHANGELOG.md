@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.1
+- Mod icon (shown in Mod Menu).
+
 ## 0.7.0
 - Config screen in Mod Menu (needs Cloth Config) for the Mythic particle amounts; applies right away in singleplayer.
 
