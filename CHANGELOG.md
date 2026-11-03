@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.2
+- Fixed a server crash ("Modifier is already applied on this attribute") when Mythic Upgrades' Jade aura re-applied, e.g. on an Alex's Mobs Mimicube copying Jade-infused armor.
+
 ## 0.7.1
 - Mod icon (shown in Mod Menu).
 
