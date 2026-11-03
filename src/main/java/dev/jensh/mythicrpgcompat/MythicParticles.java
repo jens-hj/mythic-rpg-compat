@@ -34,7 +34,7 @@ public final class MythicParticles {
 	public enum Group {
 		AMETRINE, AQUAMARINE, CITRINE, JADE, PERIDOT, RUBY, TOPAZ, NECOIUM;
 
-		String key() {
+		public String key() {
 			return name().toLowerCase(Locale.ROOT);
 		}
 	}
@@ -54,6 +54,16 @@ public final class MythicParticles {
 
 	public static double factor(Group group) {
 		return override != null ? override : FACTORS.getOrDefault(group, 1.0);
+	}
+
+	/** The configured override, or null when the per-gem factors apply. */
+	public static @Nullable Double override() {
+		return override;
+	}
+
+	/** The configured per-gem factor, ignoring the override. */
+	public static double ownFactor(Group group) {
+		return FACTORS.getOrDefault(group, 1.0);
 	}
 
 	public static void set(@Nullable Double override, Map<Group, Double> factors) {
@@ -119,30 +129,25 @@ public final class MythicParticles {
 
 	/** Reads the config, adding any missing keys with their defaults. */
 	public static void load() {
-		JsonObject root = new JsonObject();
-		if (Files.exists(FILE)) {
-			try (Reader reader = Files.newBufferedReader(FILE)) {
-				root = GSON.fromJson(reader, JsonObject.class);
-			} catch (IOException | RuntimeException e) {
-				MythicRpgCompat.LOGGER.warn("Could not read {}, using defaults", FILE, e);
-				root = new JsonObject();
-			}
-		}
-		JsonObject section = root.has(SECTION) && root.get(SECTION).isJsonObject() ? root.getAsJsonObject(SECTION) : new JsonObject();
-		section.addProperty("_comment", "Amount of Mythic Upgrades gem effect particles: 1 = Mythic's default, 0 = none, 0.25 = a quarter. "
-				+ "Set override to a number to use it for every gem instead of the per-gem values. Server-side.");
-		Double overrideValue = number(section, "override", null);
-		if (!section.has("override")) {
-			section.add("override", null);
-		}
+		JsonObject section = readSection();
 		Map<Group, Double> factors = new EnumMap<>(Group.class);
 		for (Group group : Group.values()) {
-			if (!section.has(group.key())) {
-				section.addProperty(group.key(), 1.0);
-			}
 			factors.put(group, number(section, group.key(), 1.0));
 		}
-		set(overrideValue, factors);
+		set(number(section, "override", null), factors);
+		save();
+	}
+
+	/** Writes the current values, keeping any other keys in the file. */
+	public static void save() {
+		JsonObject root = readRoot();
+		JsonObject section = new JsonObject();
+		section.addProperty("_comment", "Amount of Mythic Upgrades gem effect particles: 1 = Mythic's default, 0 = none, 0.25 = a quarter. "
+				+ "Set override to a number to use it for every gem instead of the per-gem values. Server-side.");
+		section.addProperty("override", override);
+		for (Group group : Group.values()) {
+			section.addProperty(group.key(), ownFactor(group));
+		}
 		root.add(SECTION, section);
 		try {
 			Files.createDirectories(FILE.getParent());
@@ -152,5 +157,24 @@ public final class MythicParticles {
 		} catch (IOException e) {
 			MythicRpgCompat.LOGGER.warn("Could not write {}", FILE, e);
 		}
+	}
+
+	private static JsonObject readSection() {
+		JsonObject root = readRoot();
+		return root.has(SECTION) && root.get(SECTION).isJsonObject() ? root.getAsJsonObject(SECTION) : new JsonObject();
+	}
+
+	private static JsonObject readRoot() {
+		if (Files.exists(FILE)) {
+			try (Reader reader = Files.newBufferedReader(FILE)) {
+				JsonObject root = GSON.fromJson(reader, JsonObject.class);
+				if (root != null) {
+					return root;
+				}
+			} catch (IOException | RuntimeException e) {
+				MythicRpgCompat.LOGGER.warn("Could not read {}, using defaults", FILE, e);
+			}
+		}
+		return new JsonObject();
 	}
 }
