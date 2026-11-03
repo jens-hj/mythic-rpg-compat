@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.0
+- Config screen in Mod Menu (needs Cloth Config) for the Mythic particle amounts; applies right away in singleplayer.
+
 ## 0.6.0
 - New config `config/rpg_gear_upgrades.json` to turn down Mythic Upgrades' gem effect particles, per gem or all at once with `override`.
 

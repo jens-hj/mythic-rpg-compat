@@ -58,6 +58,10 @@ Rogues & Warriors, plus their Ruby/Aeternium/Crystal weapons. See [`infusables.j
 gem effects: `mythic_particles.<gem>` per gem (`1` = Mythic's default, `0` = none), or
 `mythic_particles.override` for all gems at once. Server-side; restart to apply.
 
+With [Mod Menu](https://modrinth.com/mod/modmenu) and
+[Cloth Config](https://modrinth.com/mod/cloth-config) installed, the same settings are on the mod's
+config screen (as percentages), applied right away in singleplayer.
+
 ## How it works
 
 - Data components `mythic_rpg_compat:infusion` (gem) and `mythic_rpg_compat:forged` (tier) store

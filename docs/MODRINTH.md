@@ -60,7 +60,8 @@ Mythic Upgrades' gem effects (Jade's trail and aura, Topaz and Arcane waves, Ice
 
 - `1` keeps Mythic's amount, `0` hides them, `0.25` keeps about a quarter.
 - Set `override` to a number to use it for every gem instead of the per-gem values.
-- Particles are spawned by the server, so on a server, edit the **server's** config (restart to apply). In singleplayer, your own.
+- With [Mod Menu](https://modrinth.com/mod/modmenu) and [Cloth Config](https://modrinth.com/mod/cloth-config) installed, set them in-game: Mods → RPG Gear Upgrades → config button. Changes apply right away in singleplayer.
+- Particles are spawned by the server, so on a server, edit the **server's** config file (restart to apply). In singleplayer, your own.
 
 ## Requirements
 
