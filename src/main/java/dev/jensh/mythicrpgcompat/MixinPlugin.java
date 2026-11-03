@@ -14,6 +14,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
 			"MythicLivingEntityMixinSquared", "mythicupgrades",
 			"MythicParticlesMixin", "mythicupgrades",
 			"NecoiumParticlesMixin", "mythicupgrades",
+			"JadeAuraEffectMixin", "mythicupgrades",
 			"GemSocketingMixin", "jewelry");
 
 	@Override

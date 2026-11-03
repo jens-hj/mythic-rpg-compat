@@ -3,7 +3,7 @@
 	"package": "dev.jensh.mythicrpgcompat.mixin",
 	"plugin": "dev.jensh.mythicrpgcompat.MixinPlugin",
 	"compatibilityLevel": "JAVA_25",
-	"mixins": ["ItemStackMixin", "MythicLivingEntityMixinSquared", "GemSocketingMixin", "SmithingTransformRecipeMixin", "MythicParticlesMixin", "NecoiumParticlesMixin"],
+	"mixins": ["ItemStackMixin", "MythicLivingEntityMixinSquared", "GemSocketingMixin", "SmithingTransformRecipeMixin", "MythicParticlesMixin", "NecoiumParticlesMixin", "JadeAuraEffectMixin"],
 	"injectors": {
 		"defaultRequire": 1
 	},

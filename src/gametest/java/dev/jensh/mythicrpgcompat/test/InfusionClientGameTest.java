@@ -161,6 +161,10 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 				player(server).setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			});
 
+			// Jade aura re-applies cleanly when its speed modifier was left behind (an Alex's Mobs
+			// Mimicube wearing a copied Jade-infused helmet crashed the server this way).
+			sp.getServer().runOnServer(server -> check(jadeAuraReapplies(server), "jade aura survives a leftover speed modifier"));
+
 			// Particle factors: a Jade-infused set spawns Jade aura particles; factor 0 drops them,
 			// the override brings them back.
 			var jade = MythicParticles.Group.JADE;
@@ -428,6 +432,32 @@ public class InfusionClientGameTest implements FabricClientGameTest {
 			zombie.discard();
 		}
 		return effects;
+	}
+
+	private static boolean jadeAuraReapplies(net.minecraft.server.MinecraftServer server) {
+		ServerPlayer player = player(server);
+		var zombie = spawnZombie(player.level(), player);
+		try {
+			zombie.setItemSlot(EquipmentSlot.HEAD, infuse(server, "archers", "netherite_ranger_armor_head", Gem.JADE, null));
+			zombie.tick();
+			var aura = net.trique.mythicupgrades.MythicEffects.JADE_AURA;
+			if (!zombie.hasEffect(aura)) {
+				log("jade aura: infused helmet gave no aura");
+				return false;
+			}
+			// Drop the effect without its cleanup, leaving the speed modifier on the mob.
+			zombie.removeEffectNoUpdate(aura);
+			zombie.tick();
+			var speed = zombie.getAttribute(Attributes.MOVEMENT_SPEED);
+			boolean ok = zombie.hasEffect(aura) && speed.hasModifier(Identifier.fromNamespaceAndPath("mythicupgrades", "jade_aura_speed"));
+			log("jade aura re-applied: %s", ok);
+			return ok;
+		} catch (IllegalArgumentException e) {
+			log("jade aura re-apply threw: %s", e.getMessage());
+			return false;
+		} finally {
+			zombie.discard();
+		}
 	}
 
 	private static net.minecraft.world.entity.monster.zombie.Zombie spawnZombie(ServerLevel level, ServerPlayer player) {
